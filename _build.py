@@ -26,7 +26,9 @@ DIL = {"privacy": "en", "support": "en", "gizlilik": "tr", "destek": "tr"}
 CSS = (ROOT / "assets" / "site.css").read_text(encoding="utf-8").strip()
 
 # Elle yazılan ama stili site.css'ten gelen sayfalar.
-EL_SAYFALARI = ["index.html", "404.html", "birdie-smash/index.html"]
+# index.html listede YOK (2026-11-10): ana sayfa "Swarm" tasarımına geçti, stili kendi içinde;
+# buraya geri eklenirse betik o stili site.css ile ezer.
+EL_SAYFALARI = ["404.html", "birdie-smash/index.html"]
 
 MARKA_SVG = ('<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="none" '
              'stroke="currentColor" stroke-width="2"/><path d="M7.5 12.5l3 3 6-7" fill="none" stroke="currentColor" '
