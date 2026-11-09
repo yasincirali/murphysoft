@@ -94,7 +94,7 @@ def main() -> None:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="dark">
 <meta name="kaynak-sha256" content="{ozet}">
 <link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
 <title>{html.escape(baslik)} · Murphysoft</title>

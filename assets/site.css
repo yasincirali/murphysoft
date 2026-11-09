@@ -5,17 +5,17 @@
    Renk zeminde değil, uygulama ikonlarında (ekrandaki tek zengin öğe).
    _build.py bu dosyayı her sayfaya satır içi gömer: dış istek (yazı tipi, betik, analitik) yok, gizlilik
    sayfası okuyanın IP'si kimseye gitmez. Yazı tipi sistemden: başlıkta sistem mono (SF Mono), metinde sistem sans. Boyutlar rem: tarayıcı/iOS metin büyütmesi tüm sayfayı ölçekler. */
+/* 2026-11-10: alt sayfalar ana sayfanın ("Swarm") diline çekildi: tek koyu grafit zemin, tek turuncu vurgu,
+   Urbanist. Önceki açık/koyu çift tema ve mono başlık kalktı; ana sayfadan alt sayfaya geçince görünüm
+   değişmesin diye. Yazı tipi siteden sunulur (assets/fonts), dış istek yine yok. */
+@font-face{font-family:"Urbanist";font-style:normal;font-weight:400 800;font-display:swap;src:url("/assets/fonts/urbanist-latin.woff2") format("woff2")}
 :root{
-  --bg:#f1f3f1;--surface:#fafbfa;--ink:#181b1a;--ink-2:#444a47;--ink-3:#5f6662;
-  --line:rgba(24,27,26,.12);--accent:#1d4fb8;--ok:#2d6a3c;
-  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  color-scheme:light
+  --bg:#18191b;--surface:#222427;--ink:#eff0f1;--ink-2:#c3c6c9;--ink-3:#a4a7ab;
+  --line:rgba(239,240,241,.12);--accent:#ff6a45;--ok:#4cd98a;
+  --sans:"Urbanist","Avenir Next","Segoe UI",system-ui,-apple-system,sans-serif;
+  --mono:var(--sans);
+  color-scheme:dark
 }
-@media (prefers-color-scheme:dark){:root{
-  --bg:#101211;--surface:#181b1a;--ink:#e7eae8;--ink-2:#b6bcb8;--ink-3:#939a96;
-  --line:rgba(231,234,232,.12);--accent:#9db8ff;--ok:#8fc79a;color-scheme:dark
-}}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.6 var(--sans);-webkit-font-smoothing:antialiased}
