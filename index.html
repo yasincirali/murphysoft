@@ -10,6 +10,13 @@
 <meta property="og:description" content="Whatever can go wrong, we test first. Small games and apps that respect your time and your privacy.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://murphysoft.app/">
+<meta property="og:image" content="https://murphysoft.app/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Murphysoft wordmark with the icons of its five apps">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://murphysoft.app/">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/urbanist-latin.woff2" as="font" type="font/woff2" crossorigin>
 <title>Murphysoft</title>
@@ -168,7 +175,7 @@ h1, h2, h3 { font-weight: 500; letter-spacing: -0.035em; line-height: 1.04; text
 .contact { min-height: 62vh; display: flex; flex-direction: column; justify-content: center; padding-block: 96px 48px; }
 .contact h2 { font-size: var(--step-head); }
 .contact .lead { margin-top: 16px; color: var(--muted); font-size: var(--step-lead); line-height: 1.35; max-width: 30em; }
-.mail { display: inline-block; margin-top: 28px; font-weight: 600; font-size: clamp(1.6rem, 0.6rem + 4.6vw, 4.5rem); letter-spacing: -0.04em; line-height: 1.05; text-decoration: none; overflow-wrap: anywhere; user-select: all; -webkit-user-select: all; transition: color 150ms var(--ease); }
+.mail { display: inline-block; margin-top: 28px; font-weight: 600; font-size: clamp(1.6rem, 0.6rem + 4.6vw, 4.5rem); letter-spacing: -0.04em; line-height: 1.05; text-decoration: none; overflow-wrap: anywhere; user-select: all; -webkit-user-select: all; min-height: 44px; /* HIG dokunma alanı: dar ekranda yazı 27 px kalıyordu (2026-11-10) */ transition: color 150ms var(--ease); }
 .mail:hover { color: var(--accent); }
 .foot-slot { height: 44vh; min-height: 220px; display: flex; align-items: center; justify-content: center; }
 .foot-slot .wordmark { font-size: clamp(3rem, 15vw, 14rem); margin: 0; }
@@ -276,6 +283,9 @@ h1, h2, h3 { font-weight: 500; letter-spacing: -0.035em; line-height: 1.04; text
               <p><span class="st dev">In development</span><span class="plat">iPhone</span></p>
               <h3>My Pocket Money</h3>
               <p class="desc">A pocket money jar for kids, looked after by four characters. No ads, no tracking, everything stays on the device.</p>
+              <div class="acts">
+                <a class="btn ghost" href="/pocket-money/">Support and privacy</a>
+              </div>
             </div>
           </article>
           <article class="panel" data-color="#34d399">
@@ -284,6 +294,9 @@ h1, h2, h3 { font-weight: 500; letter-spacing: -0.035em; line-height: 1.04; text
               <p><span class="st dev">In development</span><span class="plat">iPhone</span></p>
               <h3>Coverline</h3>
               <p class="desc">Receipts and warranties in one place, and which of your rights still apply today: returns, legal guarantee, manufacturer warranty.</p>
+              <div class="acts">
+                <a class="btn ghost" href="/coverline/">Support and privacy</a>
+              </div>
             </div>
           </article>
           <article class="panel" data-color="#c8703f">
@@ -340,6 +353,8 @@ h1, h2, h3 { font-weight: 500; letter-spacing: -0.035em; line-height: 1.04; text
       <nav aria-label="Legal">
         <a href="/birdie-smash/privacy/">Birdie Smash privacy</a>
         <a href="https://yasincirali.github.io/sandikapp/privacy-en/">Sandık privacy</a>
+        <a href="/pocket-money/privacy/">My Pocket Money privacy</a>
+        <a href="/coverline/privacy/">Coverline privacy</a>
         <a href="#top">Back to top</a>
       </nav>
     </div>

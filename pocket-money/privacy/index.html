@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="kaynak-sha256" content="1c6e071b1ad4c588db9585d3bdeca06f43acf5d4fd13a3f70472a090429cc90b">
+<link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="canonical" href="https://murphysoft.app/pocket-money/privacy/">
+<title>Pocket Money (Harçlıklarım) Privacy Policy · Murphysoft</title>
+<style>
+/* Murphysoft — tek stil dosyası (2026-11-07 tasarım turu, yön A "Test defteri").
+   Neden: stüdyonun sözü "Whatever can go wrong, we test first." Dünya bir test kaydı: soğuk gri-yeşil
+   laboratuvar defteri zemini, mürekkep metin, başlık ve durum satırları mono (test çıktısı gibi). Krem zemin +
+   serif başlık bilerek seçilmedi: yapay zekâ üretimi sayfaların en sık düştüğü görünüm (unslop turu).
+   Renk zeminde değil, uygulama ikonlarında (ekrandaki tek zengin öğe).
+   _build.py bu dosyayı her sayfaya satır içi gömer: dış istek (yazı tipi, betik, analitik) yok, gizlilik
+   sayfası okuyanın IP'si kimseye gitmez. Yazı tipi sistemden: başlıkta sistem mono (SF Mono), metinde sistem sans. Boyutlar rem: tarayıcı/iOS metin büyütmesi tüm sayfayı ölçekler. */
+:root{
+  --bg:#f1f3f1;--surface:#fafbfa;--ink:#181b1a;--ink-2:#444a47;--ink-3:#5f6662;
+  --line:rgba(24,27,26,.12);--accent:#1d4fb8;--ok:#2d6a3c;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:light
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#101211;--surface:#181b1a;--ink:#e7eae8;--ink-2:#b6bcb8;--ink-3:#939a96;
+  --line:rgba(231,234,232,.12);--accent:#9db8ff;--ok:#8fc79a;color-scheme:dark
+}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-underline-offset:.18em;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.kap{max-width:45rem;margin:0 auto;padding-left:max(1rem,env(safe-area-inset-left));padding-right:max(1rem,env(safe-area-inset-right))}
+
+/* Üst şerit: marka + iki bağlantı. Dokunma alanı en az 44 px. */
+.ust{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 1rem;padding-top:max(.75rem,env(safe-area-inset-top))}
+.marka{display:inline-flex;align-items:center;gap:.5rem;min-height:44px;color:var(--ink);text-decoration:none;font-weight:600;letter-spacing:.01em}
+.marka svg{width:1.25rem;height:1.25rem;flex:none}
+.ust nav{display:flex;gap:.25rem}
+.ust nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 .5rem;color:var(--ink-2);text-decoration:none;font-size:.9375rem}
+.ust nav a:hover{color:var(--ink)}
+
+main{padding-block:1.5rem 3.5rem}
+h1,h2,h3{font-weight:500;text-wrap:balance}
+h1{font:500 clamp(1.875rem,6.4vw,2.875rem)/1.12 var(--mono);letter-spacing:-.03em;margin:1.5rem 0 1rem}
+.giris{font-size:1.1875rem;color:var(--ink-2);margin:0;max-width:34rem}
+h2{font:600 1.125rem/1.3 var(--sans);margin:0}
+.bolum{margin-top:3.5rem}
+.bolum-bas{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--line)}
+.sayac{font:400 .8125rem var(--mono);color:var(--ink-3)}
+p,ul{margin:.75rem 0}
+
+/* Uygulama satırı: ikon (ekrandaki tek renkli öğe) + ad + tek cümle + durum + bağlantılar. */
+.uygulamalar{list-style:none;margin:0;padding:0}
+/* Flex sarma: metin çok büyütülünce (Dynamic Type benzeri) ikon üstte kalır, metin tam genişliğe iner. */
+.uyg{display:flex;flex-wrap:wrap;align-items:flex-start;gap:1rem;padding:1.5rem 0;border-bottom:1px solid var(--line)}
+.uyg>div{flex:1 1 14rem;min-width:0}
+.iletisim{overflow-wrap:anywhere}
+.ikon{flex:none;width:4.5rem;height:4.5rem;border-radius:1rem;display:block;box-shadow:0 0 0 1px var(--line),0 1px 2px rgba(0,0,0,.08)}
+.uyg h3{font:600 1.125rem/1.3 var(--sans);margin:.125rem 0 .25rem}
+.uyg h3 a{color:var(--ink);text-decoration:none}
+.uyg h3 a:hover{text-decoration:underline}
+.uyg p{margin:0;color:var(--ink-2)}
+.durum{display:flex;align-items:center;gap:.5rem;margin-top:.5rem!important;font:400 .8125rem/1.4 var(--mono);color:var(--ink-3)}
+/* İmza: test defteri kutucuğu. Anlam yalnızca biçimde değil, yanındaki metinde de var (renk körlüğü). */
+.kutu{width:.75rem;height:.75rem;border:1.5px solid currentColor;border-radius:3px;flex:none}
+.kutu.tamam{background:var(--ok);border-color:var(--ok)}
+.kutu.yakinda{background:linear-gradient(currentColor,currentColor) center/50% 50% no-repeat}
+.baglar{display:flex;flex-wrap:wrap;gap:0 1rem;margin-top:.25rem;font-size:.9375rem}
+.baglar a{display:inline-flex;align-items:center;min-height:44px}
+
+.iletisim p{color:var(--ink-2)}
+.iletisim .eposta{font:500 1.125rem var(--mono);color:var(--ink);display:inline-flex;min-height:44px;align-items:center;overflow-wrap:anywhere}
+
+footer{border-top:1px solid var(--line);padding-block:1.25rem max(2rem,env(safe-area-inset-bottom));color:var(--ink-3);font-size:.875rem}
+footer a{color:inherit}
+
+/* Uygulama sayfası (ör. /birdie-smash/) */
+.urun-bas{display:flex;flex-wrap:wrap;gap:1.25rem;align-items:center;margin-top:1.5rem}
+.urun-bas .ikon{width:6rem;height:6rem;border-radius:1.375rem}
+.urun-bas h1{margin:0}
+.satirlar{list-style:none;margin:1rem 0 0;padding:0;border-top:1px solid var(--line)}
+.satirlar a{display:flex;align-items:center;justify-content:space-between;min-height:3.25rem;border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none}
+.satirlar a::after{content:"›";color:var(--ink-3);font-size:1.25rem}
+.satirlar a:hover{color:var(--accent)}
+.satirlar .dil{color:var(--ink-3);font:400 .8125rem var(--mono);margin-left:auto;margin-right:.75rem}
+
+/* Yasal metin sayfaları (_build.py) */
+.metin h1{font-size:clamp(1.875rem,6vw,2.5rem);margin-top:1.5rem}
+.metin h2{font:600 1.125rem/1.35 var(--sans);margin:2.25rem 0 .5rem;padding-top:1.25rem;border-top:1px solid var(--line)}
+.metin ul{padding-left:1.25rem}
+.metin li{margin:.375rem 0}
+code{font:.9em var(--mono)}
+.surum,.soluk{color:var(--ink-3);font:400 .8125rem/1.5 var(--mono)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.urun-bas + .giris{margin-top:1.5rem}
+</style>
+</head>
+<body>
+<!-- legal/pocket-money/privacy.md kaynağından _build.py ile üretildi; elle düzenleme. -->
+<header class="ust kap"><a href="/" class="marka" aria-label="Murphysoft home"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7.5 12.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Murphysoft</span></a><nav aria-label="Site"><a href="/pocket-money/">My Pocket Money</a></nav></header>
+<main class="kap metin">
+<h1>Pocket Money (Harçlıklarım) Privacy Policy</h1>
+<p class="surum">Version 2.1 · 10 November 2026 · <a href="/pocket-money/gizlilik/">Türkçe</a> · <a href="/pocket-money/privacy/">English</a> · <a href="/pocket-money/datenschutz/">Deutsch</a> · <a href="/pocket-money/privacidad/">Español</a> · <a href="/pocket-money/confidentialite/">Français</a> · <a href="/pocket-money/privacidade/">Português</a></p>
+<p>Pocket Money is a piggy bank app for children aged 7–15. There is no account and we run no server.</p>
+<ol><li><strong>Data we collect:</strong> None. The child's first name, age group, currency, savings entries, withdrawals, stickers and lesson progress are stored only on the phone. Nothing is sent to us or to any third party. If the phone's own backup (iCloud or Google) is turned on, this data is included in that backup; only you can see that backup, we cannot.</li><li><strong>Parent lock (PIN):</strong> The PIN is not stored as plain text; only a one-way hash stays on the phone.</li><li><strong>Prices:</strong> To show today's value of the gold and currency characters, the app requests the day's prices from a public market data provider. The request carries no information about the child or the parent; as with any internet connection, only the device's internet address reaches the provider.</li><li><strong>Feedback:</strong> "Send feedback" in "Parents' corner" opens only after the parent PIN is entered. The text is shown on screen first and contains no name or amounts. The parent sends it with an app of their choice (e.g. email).</li><li><strong>Ads, tracking, analytics, notifications:</strong> None. No in-app purchases. No third-party analytics or advertising code.</li><li><strong>Deletion:</strong> "Delete all data" in "Parents' corner", or deleting the app, removes all data from the phone.</li><li><strong>Contact:</strong> For questions and requests: <a href="mailto:support@murphysoft.app">support@murphysoft.app</a></li></ol>
+<p>If this policy changes, the version number goes up and the change is described on this page.</p>
+<p>Change in 2.1: the contact address is now <a href="mailto:support@murphysoft.app">support@murphysoft.app</a>. Nothing else changed.</p>
+</main>
+<footer class="kap">© 2026 Murphysoft · <a href="mailto:support@murphysoft.app">support@murphysoft.app</a></footer>
+</body>
+</html>
