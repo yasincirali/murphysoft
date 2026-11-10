@@ -16,6 +16,9 @@
 <meta property="og:image:alt" content="Murphysoft wordmark with the icons of its five apps">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://murphysoft.app/">
+<link rel="alternate" hreflang="en" href="https://murphysoft.app/">
+<link rel="alternate" hreflang="tr" href="https://murphysoft.app/tr/">
+<link rel="alternate" hreflang="x-default" href="https://murphysoft.app/">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/urbanist-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -26,6 +29,13 @@
 @font-face {
   font-family: "Urbanist"; font-style: normal; font-weight: 400 800; font-display: swap;
   src: url("/assets/fonts/urbanist-latin.woff2") format("woff2");
+}
+/* Türkçe ğ, ş, İ temel Latin dosyasında yok: yedek yazı tipine düşüp sözcüğün ortasında sırıtıyordu.
+   Genişletilmiş Latin ayrı dosyada; unicode-range sayesinde yalnız o harfler geçen sayfa indirir. */
+@font-face {
+  font-family: "Urbanist"; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url("/assets/fonts/urbanist-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* Layout: one swarm of points lives behind the whole page. It is the name on the first
    screen, each app's icon while you scroll the apps, dust behind the text, the name again
@@ -111,6 +121,12 @@ h1, h2, h3 { font-weight: 500; letter-spacing: -0.035em; line-height: 1.04; text
 .nav nav { display: flex; gap: clamp(18px, 3vw, 40px); }
 .nav nav a { text-decoration: none; font-weight: 500; padding: 12px 0; transition: color var(--t-fast) var(--ease); }
 .nav nav a:hover { color: var(--accent); }
+/* Dil: varsayılan İngilizce (/), Türkçe /tr/ (yasin 2026-11-10). Düğme gidilecek dili kendi dilinde söyler. */
+.nav nav a.lang { color: var(--muted); font-weight: 600; min-width: 44px; text-align: right; }
+.nav nav a.lang:hover { color: var(--accent); }
+/* Dar telefonda bölüm bağlantıları sığmıyor (Türkçesi 425 px istiyordu): yalnız dil kalır; bölümlere ilk
+   ekrandaki iki düğme ve kaydırma götürür. */
+@media (max-width: 560px) { .nav nav a:not(.lang) { display: none; } }
 
 /* ---------- hero ---------- */
 .hero { min-height: calc(100 * var(--vh)); display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: clamp(28px, 5vh, 56px); padding-top: 96px; }
@@ -247,6 +263,7 @@ h1, h2, h3 { font-weight: 500; letter-spacing: -0.035em; line-height: 1.04; text
       <a href="#apps">Apps</a>
       <a href="#method">Method</a>
       <a href="#contact">Contact</a>
+      <a class="lang" href="/tr/" lang="tr" hreflang="tr" aria-label="Türkçe">TR</a>
     </nav>
   </header>
 
