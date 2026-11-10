@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#18191b">
+<meta name="description" content="Murphysoft küçük oyunlar ve uygulamalar yapan bağımsız bir stüdyodur: Sandık, Birdie Smash, Harçlıklarım, Rafım ve Kepler Drift.">
+<meta property="og:title" content="Murphysoft">
+<meta property="og:description" content="Ters gidebilecek ne varsa önce biz deneriz. Zamanına ve gizliliğine saygılı küçük oyunlar ve uygulamalar.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://murphysoft.app/tr/">
+<meta property="og:image" content="https://murphysoft.app/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Murphysoft yazısı ve beş uygulamasının ikonları">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://murphysoft.app/tr/">
+<link rel="alternate" hreflang="en" href="https://murphysoft.app/">
+<link rel="alternate" hreflang="tr" href="https://murphysoft.app/tr/">
+<link rel="alternate" hreflang="x-default" href="https://murphysoft.app/">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/urbanist-latin.woff2" as="font" type="font/woff2" crossorigin>
+<title>Murphysoft</title>
+<!-- Ana sayfa (2026-11-10, "Swarm"): stili kendi içinde; _build.py bu dosyanın <style> bloğuna dokunmaz. -->
+<style>
+/* Urbanist (SIL Open Font License 1.1), served from this site: no request leaves murphysoft.app. */
+@font-face {
+  font-family: "Urbanist"; font-style: normal; font-weight: 400 800; font-display: swap;
+  src: url("/assets/fonts/urbanist-latin.woff2") format("woff2");
+}
+/* Türkçe ğ, ş, İ temel Latin dosyasında yok: yedek yazı tipine düşüp sözcüğün ortasında sırıtıyordu.
+   Genişletilmiş Latin ayrı dosyada; unicode-range sayesinde yalnız o harfler geçen sayfa indirir. */
+@font-face {
+  font-family: "Urbanist"; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url("/assets/fonts/urbanist-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* Layout: one swarm of points lives behind the whole page. It is the name on the first
+   screen, each app's icon while you scroll the apps, dust behind the text, the name again
+   at the end. One section per screen, one accent, statuses spelled out in words. */
+:root {
+  color-scheme: dark;
+  --bg: #18191b;
+  --surface: #222427;
+  --ink: #eff0f1;
+  --muted: #a4a7ab;
+  --accent: #ff4a1f;
+  --accent-ink: #18191b;
+  --live: #4cd98a;
+  --face: "Urbanist", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --step-small: 0.9375rem;
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --step-lead: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --step-head: clamp(2.25rem, 1.4rem + 3.4vw, 4rem);
+  --step-name: clamp(3rem, 1.6rem + 6vw, 6.5rem);
+  --m: clamp(16px, 4vw, 64px);
+  /* Hareket ölçeği (2026-11-10): Astryx tasarım sisteminin (MIT) varsayılan temposu. Küçük tepki "fast",
+     giriş/çıkış "medium"; min = taban × .75. Eğri yumuşak yavaşlar, sekme yok; çıkış eğrisi ayrı. */
+  --t-fast-min: 130ms; --t-fast: 175ms; --t-medium-min: 310ms; --t-medium: 410ms; --t-medium-max: 545ms;
+  --ease: cubic-bezier(.24, 1, .4, 1);
+  --ease-exit: cubic-bezier(.3, 0, .6, .6);
+  /* Telefonda adres çubuğu açılıp kapanınca 100vh değişir ve ilk ekranın altı çubuğun arkasında kalır:
+     küçük görünüm (svh) esas alınır; desteklemeyen tarayıcı vh'de kalır. */
+  --vh: 1vh;
+}
+@supports (height: 100svh) { :root { --vh: 1svh; } }
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 400 var(--step-body)/1.5 var(--face);
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+p, h1, h2, h3, ul { margin: 0; }
+ul { padding: 0; list-style: none; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+::selection { background: var(--accent); color: var(--accent-ink); }
+.wrap {
+  max-width: 1320px; margin-inline: auto;
+  padding-left: max(var(--m), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--m), env(safe-area-inset-right, 0px));
+}
+.skip { position: absolute; left: 16px; top: -80px; z-index: 20; background: var(--ink); color: var(--bg); padding: 12px 16px; border-radius: 999px; font-weight: 600; }
+.skip:focus { top: calc(12px + env(safe-area-inset-top, 0px)); }
+
+#swarm { position: fixed; left: 0; top: 0; width: 100%; height: 100vh; height: 100lvh; z-index: 0; display: none; pointer-events: none; }
+.xp #swarm { display: block; }
+.page { position: relative; z-index: 1; }
+
+h1, h2, h3 { font-weight: 500; letter-spacing: -0.035em; line-height: 1.04; text-wrap: balance; }
+
+/* buttons: one pair */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 0 22px; border-radius: 999px; border: 0; cursor: pointer;
+  font: 600 1rem/1 var(--face); text-decoration: none;
+  background: var(--accent); color: var(--accent-ink);
+  transition: transform var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease);
+}
+.btn:hover { background: #ff6a45; transform: translateY(-1px); }
+.btn:active { transform: translateY(0) scale(.97); transition-duration: var(--t-fast-min); }
+.btn.ghost { background: var(--surface); color: var(--ink); }
+.btn.ghost:hover { background: #2e3135; }
+
+/* status: a shape and a word, never colour alone */
+.st { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; white-space: nowrap; }
+.st::before { content: ""; width: 12px; height: 12px; border-radius: 50%; flex: none; box-sizing: border-box; }
+.st.live { color: var(--live); }
+.st.live::before { background: var(--live); }
+.st.soon { color: var(--accent); }
+.st.soon::before { border: 2.5px solid var(--accent); background: linear-gradient(90deg, var(--accent) 50%, transparent 50%); }
+.st.dev { color: var(--muted); }
+.st.dev::before { border: 2.5px solid var(--muted); }
+
+/* ---------- nav ---------- */
+.nav { display: flex; justify-content: space-between; align-items: center; padding-block: 18px; position: absolute; left: 0; right: 0; top: 0; z-index: 3; }
+.nav .brand { font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em; text-decoration: none; padding: 12px 0; }
+.nav nav { display: flex; gap: clamp(18px, 3vw, 40px); }
+.nav nav a { text-decoration: none; font-weight: 500; padding: 12px 0; transition: color var(--t-fast) var(--ease); }
+.nav nav a:hover { color: var(--accent); }
+/* Dil: varsayılan İngilizce (/), Türkçe /tr/ (yasin 2026-11-10). Düğme gidilecek dili kendi dilinde söyler. */
+.nav nav a.lang { color: var(--muted); font-weight: 600; min-width: 44px; text-align: right; }
+.nav nav a.lang:hover { color: var(--accent); }
+/* Dar telefonda bölüm bağlantıları sığmıyor (Türkçesi 425 px istiyordu): yalnız dil kalır; bölümlere ilk
+   ekrandaki iki düğme ve kaydırma götürür. */
+@media (max-width: 560px) { .nav nav a:not(.lang) { display: none; } }
+
+/* ---------- hero ---------- */
+.hero { min-height: calc(100 * var(--vh)); display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: clamp(28px, 5vh, 56px); padding-top: 96px; }
+.wordmark { font: 800 clamp(4rem, 17vw, 16rem)/.95 var(--face); letter-spacing: -0.05em; margin: auto 0; text-align: center; }
+.xp .wordmark { visibility: hidden; height: calc(44 * var(--vh)); overflow: hidden; margin: 0; }
+.hero-foot { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 32px clamp(32px, 6vw, 96px); align-items: end; }
+.hero h1 { font-size: var(--step-head); }
+.hero .sub { margin-top: 16px; max-width: 34em; color: var(--muted); font-size: var(--step-lead); line-height: 1.35; }
+.hero .sub b { color: var(--ink); font-weight: 500; }
+.acts { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+
+.board { display: grid; }
+.board a {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  min-height: 48px; padding: 6px 14px; margin-inline: -14px; border-radius: 12px;
+  text-decoration: none; font-weight: 600; font-size: var(--step-lead); letter-spacing: -0.02em;
+  transition: background-color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.board a:hover { background: var(--surface); transform: translateX(4px); }
+.board a .st { font-size: var(--step-small); letter-spacing: 0; }
+
+/* ---------- apps: static list by default, a pinned stage with script ---------- */
+.apps h2 { font-size: var(--step-lead); color: var(--muted); letter-spacing: -0.01em; }
+.apps .stage { padding-block: 72px; }
+.panels { display: grid; gap: 72px; margin-top: 40px; }
+.panel { display: grid; grid-template-columns: 96px 1fr; gap: 12px 28px; align-items: start; }
+.panel .icon { width: 96px; height: 96px; border-radius: 22px; display: block; }
+.panel h3 { font-size: var(--step-name); font-weight: 600; letter-spacing: -0.045em; line-height: .98; margin-top: 10px; }
+.panel .desc { margin-top: 18px; font-size: var(--step-lead); line-height: 1.35; max-width: 30em; }
+.panel .plat { color: var(--muted); font-weight: 500; margin-left: 12px; }
+.apps .rail { display: none; }
+
+.xp .apps { height: calc(520 * var(--vh)); position: relative; }
+.xp .apps .stage {
+  position: sticky; top: 0; height: calc(100 * var(--vh)); padding-block: 88px 28px;
+  display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr auto; column-gap: clamp(32px, 6vw, 96px);
+}
+.xp .apps h2 { grid-column: 1 / -1; }
+.xp .panels { grid-column: 2; grid-row: 2; margin: 0; gap: 0; align-items: center; }
+.xp .panel { grid-area: 1 / 1; display: block; opacity: 0; pointer-events: none; will-change: opacity, transform; }
+.xp .panel.on { pointer-events: auto; }
+.xp .panel .icon { display: none; }
+.xp .apps .rail { display: flex; grid-column: 1 / -1; grid-row: 3; gap: 8px; flex-wrap: wrap; }
+.rail button {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px;
+  background: transparent; color: var(--muted); border: 0; border-radius: 999px; cursor: pointer;
+  font: 600 var(--step-small)/1 var(--face);
+  transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease), transform var(--t-fast-min) var(--ease);
+}
+.rail button:hover { color: var(--ink); background: var(--surface); }
+.rail button:active { transform: scale(.96); }
+.rail button[aria-current="true"] { background: var(--ink); color: var(--bg); }
+.rail button .st { color: inherit; gap: 0; }
+.rail button .st span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+/* Dokunmatik ekranda kaydırma bir uygulamanın tam üstünde durur (yakınsa): parmak bırakıldığında
+   sürü iki ikonun arasında dağınık kalmasın. Fare/trackpad'de kaydırma zaten ince; orada yok. */
+.snap { display: none; }
+@media (pointer: coarse) {
+  html.xp { scroll-snap-type: y proximity; }
+  .xp .snap { display: block; position: absolute; left: 0; width: 1px; height: 1px; scroll-snap-align: start; pointer-events: none; }
+}
+
+/* Kaydırınca beliren satırlar: yalnız betik ve hareket izni varsa (.xp); 12 px yükselir, yer değiştirme yok. */
+.xp .rv { opacity: 0; transform: translateY(12px); transition: opacity var(--t-medium) var(--ease), transform var(--t-medium-max) var(--ease); transition-delay: calc(var(--i, 0) * 45ms); }
+.xp .rv.in { opacity: 1; transform: none; }
+
+/* ---------- method ---------- */
+.method { min-height: calc(100 * var(--vh)); display: flex; flex-direction: column; justify-content: center; padding-block: 96px; }
+.method h2 { font-size: var(--step-head); max-width: 14em; }
+.method .lead { margin-top: 16px; color: var(--muted); font-size: var(--step-lead); line-height: 1.35; max-width: 34em; }
+.method table { width: 100%; border-collapse: collapse; margin-top: clamp(32px, 5vh, 56px); font-size: var(--step-lead); line-height: 1.3; }
+.method th { text-align: left; font-weight: 600; font-size: var(--step-small); color: var(--muted); padding: 0 24px 14px 0; }
+.method td { padding: .5em 24px .5em 0; vertical-align: top; }
+.method td:first-child { width: 36%; color: var(--muted); }
+.method td:nth-child(2) { width: 18%; font-weight: 600; }
+.method td:last-child { padding-right: 0; }
+.method .fail { display: inline-block; transform-origin: 0 50%; transition: transform 380ms cubic-bezier(.3, 1.5, .5, 1), color var(--t-fast) var(--ease); }
+.method tbody tr:hover .fail, .method tr.knock .fail { transform: rotate(-2deg) translateY(4px); color: var(--ink); }
+
+/* ---------- contact + footer ---------- */
+.contact { min-height: 62vh; display: flex; flex-direction: column; justify-content: center; padding-block: 96px 48px; }
+.contact h2 { font-size: var(--step-head); }
+.contact .lead { margin-top: 16px; color: var(--muted); font-size: var(--step-lead); line-height: 1.35; max-width: 30em; }
+.mail { display: inline-block; margin-top: 28px; font-weight: 600; font-size: clamp(1.6rem, 0.6rem + 4.6vw, 4.5rem); letter-spacing: -0.04em; line-height: 1.05; text-decoration: none; overflow-wrap: anywhere; user-select: all; -webkit-user-select: all; min-height: 44px; /* HIG dokunma alanı: dar ekranda yazı 27 px kalıyordu (2026-11-10) */ transition: color var(--t-fast) var(--ease); }
+.mail:hover { color: var(--accent); }
+.foot-slot { height: 44vh; min-height: 220px; display: flex; align-items: center; justify-content: center; }
+.foot-slot .wordmark { font-size: clamp(3rem, 15vw, 14rem); margin: 0; }
+.xp .foot-slot .wordmark { height: auto; }
+.foot-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 28px; padding-block: 20px calc(24px + env(safe-area-inset-bottom, 0px)); color: var(--muted); font-size: var(--step-small); }
+.foot-row nav { display: flex; flex-wrap: wrap; gap: 0 28px; }
+.foot-row a { color: var(--ink); text-decoration: none; padding: 12px 0; display: inline-block; font-weight: 500; transition: color var(--t-fast) var(--ease); }
+.foot-row a:hover { color: var(--accent); }
+.foot-row p { padding: 12px 0; }
+
+/* ---------- phone ---------- */
+@media (max-width: 820px) {
+  .hero-foot { grid-template-columns: 1fr; }
+  .xp .wordmark { height: calc(34 * var(--vh)); }
+  /* İki düğme yan yana: alt alta dizilince ikincisi ilk ekranın dışında kalıyordu. */
+  .acts .btn { flex: 1 1 0; padding-inline: 12px; white-space: nowrap; }
+  .panel .acts .btn { flex: 1 1 100%; }
+  .board a { font-size: 1.125rem; }
+  .panel { grid-template-columns: 64px 1fr; gap: 8px 16px; }
+  .panel .icon { width: 64px; height: 64px; border-radius: 15px; }
+  .xp .apps .stage { grid-template-columns: 1fr; grid-template-rows: auto calc(40 * var(--vh)) 1fr auto; padding-block: 76px calc(16px + env(safe-area-inset-bottom, 0px)); }
+  .xp .panels { grid-column: 1; grid-row: 3; align-items: start; }
+  .xp .apps .rail { grid-row: 4; align-self: end; justify-content: space-between; gap: 0; flex-wrap: nowrap; }
+  .rail button { padding: 0; width: 48px; height: 48px; justify-content: center; }
+  .rail button b { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .method table, .method tbody, .method tr, .method td { display: block; }
+  .method thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .method tr { padding-bottom: 20px; }
+  .method td { padding: 0; width: auto !important; }
+  .method td:first-child { font-size: var(--step-body); }
+  .method td:nth-child(2), .method td:nth-child(3) { display: inline; }
+  .method td:nth-child(2)::after { content: " · "; font-weight: 400; color: var(--muted); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; scroll-snap-type: none; }
+  * { transition-duration: 1ms !important; }
+}
+</style>
+</head>
+<body>
+<!-- index.html kaynağından _build.py ile üretildi; elle düzenleme. -->
+
+<canvas id="swarm" aria-hidden="true"></canvas>
+<a class="skip" href="#apps">Uygulamalara geç</a>
+
+<div class="page">
+  <header class="nav wrap">
+    <a class="brand" href="#top">Murphysoft</a>
+    <nav aria-label="Bölümler">
+      <a href="#apps">Uygulamalar</a>
+      <a href="#method">Yöntem</a>
+      <a href="#contact">İletişim</a>
+      <a class="lang" href="/" lang="en" hreflang="en" aria-label="English">EN</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero wrap" id="top">
+      <p class="wordmark" id="mark" aria-hidden="true">Murphysoft</p>
+      <div class="hero-foot">
+        <div>
+          <h1>Ters gidebilecek ne varsa önce biz deneriz.</h1>
+          <p class="sub">Zamanına ve gizliliğine saygılı küçük oyunlar ve uygulamalar yapan bağımsız bir stüdyo. <b>Beş yapım; biri App Store ve Google Play’de yayında.</b></p>
+          <div class="acts">
+            <a class="btn" href="#apps">Uygulamaları gör</a>
+            <a class="btn ghost" href="#contact">Bize yaz</a>
+          </div>
+        </div>
+        <ul class="board" aria-label="Uygulamalar ve durumları">
+          <li><a href="#apps" data-go="0">Sandık <span class="st live">Yayında</span></a></li>
+          <li><a href="#apps" data-go="1">Birdie Smash <span class="st soon">Yakında</span></a></li>
+          <li><a href="#apps" data-go="2">Harçlıklarım <span class="st dev">Geliştiriliyor</span></a></li>
+          <li><a href="#apps" data-go="3">Rafım <span class="st dev">Geliştiriliyor</span></a></li>
+          <li><a href="#apps" data-go="4">Kepler Drift <span class="st dev">Geliştiriliyor</span></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="apps" id="apps">
+      <div class="stage wrap">
+        <h2>Uygulamalar ve oyunlar</h2>
+        <div class="panels">
+          <article class="panel on" data-color="#f5a623">
+            <img class="icon" src="/assets/apps/sandik.png" width="192" height="192" alt="">
+            <div>
+              <p><span class="st live">Yayında</span><span class="plat">iPhone ve Android</span></p>
+              <h3>Sandık</h3>
+              <p class="desc">Bütün portföyün tek ekranda. Hisse, fon, altın ve döviz; enflasyona karşı ölçülür.</p>
+              <div class="acts">
+                <a class="btn" href="https://apps.apple.com/tr/app/id6786837699">App Store’dan indir</a>
+                <a class="btn ghost" href="https://play.google.com/store/apps/details?id=com.sandik.app">Google Play’den indir</a>
+              </div>
+            </div>
+          </article>
+          <article class="panel" data-color="#ff5a4e">
+            <img class="icon" src="/assets/apps/birdie-smash.png" width="192" height="192" alt="">
+            <div>
+              <p><span class="st soon">Yakında</span><span class="plat">iPhone</span></p>
+              <h3>Birdie Smash</h3>
+              <p class="desc">Arcade badminton. Kaydırarak vur, smacı zamanla, kariyerde yüksel. Hesap gerekmez.</p>
+              <div class="acts">
+                <a class="btn ghost" href="/birdie-smash/">Birdie Smash sayfası</a>
+              </div>
+            </div>
+          </article>
+          <article class="panel" data-color="#8b5cf6">
+            <img class="icon" src="/assets/apps/harcliklarim.png" width="192" height="192" alt="">
+            <div>
+              <p><span class="st dev">Geliştiriliyor</span><span class="plat">iPhone</span></p>
+              <h3>Harçlıklarım</h3>
+              <p class="desc">7–15 yaş çocuklar için kumbara. Dört karakter birikimle birlikte büyür. Reklam yok, takip yok.</p>
+              <div class="acts">
+                <a class="btn ghost" href="/pocket-money/">Destek ve gizlilik</a>
+              </div>
+            </div>
+          </article>
+          <article class="panel" data-color="#34d399">
+            <img class="icon" src="/assets/apps/coverline.png" width="192" height="192" alt="">
+            <div>
+              <p><span class="st dev">Geliştiriliyor</span><span class="plat">iPhone</span></p>
+              <h3>Rafım</h3>
+              <p class="desc">Fişler ve garantiler tek yerde. Hangi hakkının bugün hâlâ geçerli olduğunu gör.</p>
+              <div class="acts">
+                <a class="btn ghost" href="/coverline/">Destek ve gizlilik</a>
+              </div>
+            </div>
+          </article>
+          <article class="panel" data-color="#c8703f">
+            <img class="icon" src="/assets/apps/kepler-drift.svg" width="192" height="192" alt="">
+            <div>
+              <p><span class="st dev">Geliştiriliyor</span><span class="plat">iPhone</span></p>
+              <h3>Kepler Drift</h3>
+              <p class="desc">Tek parmakla yörünge oyunu. Basılı tut, gezegenin çevresinde dön; bırak, fırla; yumuşak in.</p>
+            </div>
+          </article>
+        </div>
+        <div class="rail" role="group" aria-label="Uygulama seç">
+          <button type="button" data-go="0" aria-current="true"><span class="st live"><span>Yayında</span></span><b>Sandık</b></button>
+          <button type="button" data-go="1"><span class="st soon"><span>Yakında</span></span><b>Birdie Smash</b></button>
+          <button type="button" data-go="2"><span class="st dev"><span>Geliştiriliyor</span></span><b>Harçlıklarım</b></button>
+          <button type="button" data-go="3"><span class="st dev"><span>Geliştiriliyor</span></span><b>Rafım</b></button>
+          <button type="button" data-go="4"><span class="st dev"><span>Geliştiriliyor</span></span><b>Kepler Drift</b></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="method wrap" id="method">
+      <h2>İşler ters gidince ne olur</h2>
+      <p class="lead">Murphy yasasına göre ters gidebilecek her şey ters gider. İşte uygulamalarımızın hazırlıklı olduğu altı durum.</p>
+      <table>
+        <thead><tr><th scope="col">Ne ters gider</th><th scope="col">Uygulama</th><th scope="col">Sonra ne olur</th></tr></thead>
+        <tbody>
+          <tr><td><span class="fail">Fiyat kaynağı yanıt vermez</span></td><td>Sandık</td><td>O nokta grafiğe girmez. Hiçbir sayı uydurulmaz.</td></tr>
+          <tr><td><span class="fail">Biri başka telefondan giriş yapar</span></td><td>Sandık</td><td>E-postana bir kod gider, eski oturum kapanır.</td></tr>
+          <tr><td><span class="fail">Bir istek yarı yolda başarısız olur</span></td><td>Sandık</td><td>Nedenini sade bir dille görürsün ve yeniden deneyebilirsin.</td></tr>
+          <tr><td><span class="fail">Ayrılmak istersin</span></td><td>Sandık</td><td>Verini indirir ya da hesabı Ayarlar’dan silersin.</td></tr>
+          <tr><td><span class="fail">Bir hesap daha açmak istemezsin</span></td><td>Birdie Smash</td><td>Hesap gerekmez. İlerlemen sende kalır.</td></tr>
+          <tr><td><span class="fail">Telefon bir çocuğun elinde</span></td><td>Harçlıklarım</td><td>Reklam göstermez, hiçbir şeyi takip etmez. Bütün veri cihazda kalır.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="contact wrap" id="contact">
+      <h2>Bize yaz</h2>
+      <p class="lead">Uygulamalarımızla ilgili soru, hata bildirimi ya da fikir. Her mesajı okuruz, genellikle iki gün içinde yanıtlarız.</p>
+      <div>
+        <a class="mail" id="mail" href="mailto:support@murphysoft.app">support@murphysoft.app</a>
+      </div>
+      <div class="acts">
+        <button class="btn" id="copy" type="button">Adresi kopyala</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="foot-slot wrap" id="footslot"><p class="wordmark" aria-hidden="true">Murphysoft</p></div>
+    <div class="foot-row wrap">
+      <p>© 2026 Murphysoft</p>
+      <nav aria-label="Yasal">
+        <a href="/birdie-smash/gizlilik/">Birdie Smash gizlilik</a>
+        <a href="https://yasincirali.github.io/sandikapp/privacy/">Sandık gizlilik</a>
+        <a href="/pocket-money/gizlilik/">Harçlıklarım gizlilik</a>
+        <a href="/coverline/gizlilik/">Rafım gizlilik</a>
+        <a href="#top">Başa dön</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cv = document.getElementById('swarm'), ctx = cv.getContext && cv.getContext('2d');
+  var apps = document.getElementById('apps'), hero = document.getElementById('top');
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  var rail = Array.prototype.slice.call(document.querySelectorAll('.rail button'));
+  var footslot = document.getElementById('footslot');
+  var BG = '#18191b', INK = [239, 240, 241], ACC = [255, 74, 31];
+  var xp = !!ctx && !reduce;
+  var coarse = window.matchMedia('(pointer: coarse)').matches;
+  if (xp) root.classList.add('xp');
+
+  /* ---------- copy button, row knock: work with or without the swarm ---------- */
+  var copy = document.getElementById('copy');
+  copy.addEventListener('click', function () {
+    function done() { copy.textContent = 'Kopyalandı'; setTimeout(function () { copy.textContent = 'Adresi kopyala'; }, 1800); }
+    function select() {
+      var r = document.createRange(); r.selectNodeContents(document.getElementById('mail'));
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); copy.textContent = 'Seçildi, şimdi kopyala';
+    }
+    try { navigator.clipboard.writeText('support@murphysoft.app').then(done, select); } catch (e) { select(); }
+  });
+  document.querySelectorAll('.method tbody tr').forEach(function (tr) {
+    tr.addEventListener('click', function () { tr.classList.add('knock'); setTimeout(function () { tr.classList.remove('knock'); }, 800); });
+  });
+
+  if (!xp) {
+    document.querySelectorAll('[data-go]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        var p = panels[+el.dataset.go]; if (!p) return;
+        e.preventDefault(); p.scrollIntoView({ block: 'center' });
+      });
+    });
+    return;
+  }
+
+  /* snap points: one per app, at the scroll position where its icon is fully formed */
+  panels.forEach(function (_, k) {
+    var m = document.createElement('i'); m.className = 'snap'; m.setAttribute('aria-hidden', 'true');
+    m.style.top = 'calc(' + (84 * (k + 0.2)).toFixed(1) + ' * var(--vh))';
+    apps.appendChild(m);
+  });
+  /* rows below the apps rise in once, the first time they are seen */
+  var rv = [];
+  document.querySelectorAll('.method h2, .method .lead, .method tbody tr, .contact h2, .contact .lead, .contact > div').forEach(function (el) { rv.push(el); });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      var k = 0;
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.style.setProperty('--i', k++); e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    rv.forEach(function (el) { el.classList.add('rv'); io.observe(el); });
+  }
+
+  /* ================= the swarm ================= */
+  var W = 0, H = 0, DPR = 1, N = 0, G = 0;
+  var X, Y, VX, VY, perm, E, DL, AN;
+  var modes = { word: null, dust: null, app: [] };
+  var size = 2, P = { x: -9999, y: -9999, t: -1e9 };
+  var active = -1, raf = 0, calm = 0, builtW = 0, builtH = 0;
+
+  function pack(r, g, b) { return ((Math.min(255, r) >> 3) << 10) | ((Math.min(255, g) >> 3) << 5) | (Math.min(255, b) >> 3); }
+  function buckets(col) {
+    var map = {}, i, k, out = [];
+    for (i = 0; i < N; i++) { k = col[i]; (map[k] || (map[k] = [])).push(i); }
+    for (k in map) {
+      var c = +k, r = ((c >> 10) & 31) << 3, g = ((c >> 5) & 31) << 3, b = (c & 31) << 3;
+      out.push({ style: 'rgb(' + r + ',' + g + ',' + b + ')', idx: Int32Array.from(map[k]) });
+    }
+    return out;
+  }
+  function wordMode() {
+    var o = document.createElement('canvas'); o.width = Math.ceil(W); o.height = Math.ceil(H);
+    var x = o.getContext('2d', { willReadFrequently: true });
+    var stacked = W < 820, ls = stacked ? ['Murphy', 'soft'] : ['Murphysoft'], i, j, maxw = 0;
+    x.font = '800 100px Urbanist, system-ui, sans-serif'; x.textAlign = 'center'; x.textBaseline = 'alphabetic';
+    if ('letterSpacing' in x) x.letterSpacing = '-5px';
+    for (i = 0; i < ls.length; i++) maxw = Math.max(maxw, x.measureText(ls[i]).width);
+    var fs = Math.min((stacked ? 0.84 : 0.88) * Math.min(W, 1500) / maxw * 100, H * (stacked ? 0.17 : 0.36));
+    x.font = '800 ' + fs + 'px Urbanist, system-ui, sans-serif';
+    if ('letterSpacing' in x) x.letterSpacing = (-fs * 0.05).toFixed(1) + 'px';
+    var lh = fs * 0.92, block = fs * 0.74 + (ls.length - 1) * lh;
+    var cy = H * (stacked ? 0.25 : 0.33), y0 = cy - block / 2 + fs * 0.74;
+    x.fillStyle = '#fff';
+    for (i = 0; i < ls.length; i++) x.fillText(ls[i], W / 2, y0 + i * lh);
+    var d = x.getImageData(0, 0, o.width, o.height).data, pts = [], area = 0;
+    for (j = 0; j < o.height; j += 4) for (i = 0; i < o.width; i += 4) if (d[(j * o.width + i) * 4 + 3] > 128) area += 16;
+    var step = Math.max(2, Math.round(Math.sqrt(Math.max(1, area) / N)));
+    for (j = 0; j < o.height; j += step) for (i = 0; i < o.width; i += step)
+      if (d[(j * o.width + i) * 4 + 3] > 128) pts.push(i, j);
+    var n = Math.max(1, pts.length / 2), tx = new Float32Array(N), ty = new Float32Array(N), col = new Int32Array(N);
+    for (i = 0; i < N; i++) {
+      var k = ((i * 7919) % n) * 2;
+      tx[i] = (pts[k] || W / 2) + (Math.random() - .5) * step; ty[i] = (pts[k + 1] || cy) + (Math.random() - .5) * step;
+      var a = Math.random() < 0.14 ? ACC : INK, sh = 0.72 + Math.random() * 0.28;
+      col[i] = pack(a[0] * sh, a[1] * sh, a[2] * sh);
+    }
+    return { tx: tx, ty: ty, b: buckets(col), size: Math.max(1.6, step * 0.78), cy: cy };
+  }
+  function dustMode() {
+    var tx = new Float32Array(N), ty = new Float32Array(N), col = new Int32Array(N), i;
+    for (i = 0; i < N; i++) {
+      tx[i] = Math.random() * W; ty[i] = Math.random() * H;
+      var v = 44 + Math.random() * 38; col[i] = pack(v, v + 2, v + 5);
+    }
+    return { tx: tx, ty: ty, b: buckets(col), size: 1.5 };
+  }
+  function slot() {
+    if (W < 820) { var s = Math.min(W * 0.6, H * 0.32); return { cx: W / 2, cy: 76 + H * 0.20, s: s }; }
+    var wrapW = Math.min(W, 1320), pad = Math.max(16, Math.min(64, W * 0.04));
+    var left = (W - wrapW) / 2 + pad, inner = wrapW - pad * 2, colW = (inner - Math.min(96, Math.max(32, W * 0.06))) / 2;
+    return { cx: left + colW / 2, cy: H * 0.5, s: Math.min(colW * 0.82, H * 0.56) };
+  }
+  function appMode(img, fallback) {
+    var s = slot(), tile = s.s / G, tx = new Float32Array(N), ty = new Float32Array(N), col = new Int32Array(N), i;
+    var data = null;
+    try {
+      var o = document.createElement('canvas'); o.width = G; o.height = G;
+      var x = o.getContext('2d', { willReadFrequently: true });
+      x.drawImage(img, 0, 0, G, G); data = x.getImageData(0, 0, G, G).data;
+    } catch (e) { data = null; }
+    var fr = parseInt(fallback.slice(1, 3), 16), fg = parseInt(fallback.slice(3, 5), 16), fb = parseInt(fallback.slice(5, 7), 16);
+    var rad = G * 0.22;
+    for (i = 0; i < N; i++) {
+      var p = perm[i], px = p % G, py = (p / G) | 0;
+      /* rounded-square mask, the shape of an app icon */
+      var dx = Math.max(0, Math.abs(px + .5 - G / 2) - (G / 2 - rad)), dy = Math.max(0, Math.abs(py + .5 - G / 2) - (G / 2 - rad));
+      if (dx * dx + dy * dy <= rad * rad) {
+        tx[i] = s.cx - s.s / 2 + (px + .5) * tile; ty[i] = s.cy - s.s / 2 + (py + .5) * tile;
+        if (data) { var q = (py * G + px) * 4; col[i] = pack(data[q] * .93 + 18, data[q + 1] * .93 + 18, data[q + 2] * .93 + 18); }
+        else { var sh = .55 + .45 * (1 - py / G); col[i] = pack(fr * sh, fg * sh, fb * sh); }
+      } else {
+        var a = Math.random() * 6.283, r = s.s * (0.62 + Math.random() * 0.5);
+        tx[i] = s.cx + Math.cos(a) * r * 1.25; ty[i] = s.cy + Math.sin(a) * r;
+        var v = 40 + Math.random() * 30; col[i] = pack(v, v + 2, v + 5);
+      }
+    }
+    return { tx: tx, ty: ty, b: buckets(col), size: Math.max(1.5, tile * 0.8) };
+  }
+  function build() {
+    var r = cv.getBoundingClientRect(); W = r.width; H = r.height; builtW = W; builtH = window.innerHeight;
+    DPR = Math.min(window.devicePixelRatio || 1, 1.5);
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    var g = W < 820 ? 62 : 92, i;
+    if (g !== G) {
+      G = g; N = G * G;
+      X = new Float32Array(N); Y = new Float32Array(N); VX = new Float32Array(N); VY = new Float32Array(N);
+      E = new Float32Array(N); DL = new Float32Array(N); AN = new Float32Array(N);
+      for (i = 0; i < N; i++) { DL[i] = Math.random(); AN[i] = Math.random() * 6.2832; }
+      perm = new Int32Array(N);
+      for (i = 0; i < N; i++) { perm[i] = i; X[i] = Math.random() * W; Y[i] = Math.random() * H; }
+      for (i = N - 1; i > 0; i--) { var j = (Math.random() * (i + 1)) | 0, t = perm[i]; perm[i] = perm[j]; perm[j] = t; }
+    }
+    modes.word = wordMode(); modes.dust = dustMode();
+    modes.app = panels.map(function (p) { return appMode(p.querySelector('.icon'), p.dataset.color); });
+    ctx.fillStyle = BG; ctx.fillRect(0, 0, cv.width, cv.height);
+    decide();
+  }
+  /* The scroll position picks two shapes and how far along the way between them the swarm is.
+     Nothing switches: every point travels its own arc, scrubbed by the scroll. */
+  var S = { A: null, B: null, t: 0, oa: 0, ob: 0, dim: 1 };
+  function sm(x) { x = x < 0 ? 0 : x > 1 ? 1 : x; return x * x * (3 - 2 * x); }
+  function setActive(k) {
+    if (k === active) return; active = k;
+    panels.forEach(function (p, i) { p.classList.toggle('on', i === k); if ('inert' in p) p.inert = i !== k; });
+    rail.forEach(function (b, i) { b.setAttribute('aria-current', String(i === k)); });
+  }
+  function decide() {
+    var y = window.scrollY || window.pageYOffset, heroH = hero.offsetHeight, n = panels.length;
+    var VH = apps.firstElementChild.offsetHeight || H;
+    var aTop = apps.offsetTop, span = Math.max(1, apps.offsetHeight - VH);
+    var fr = footslot.getBoundingClientRect();
+    var A, B, t = 0, oa = 0, ob = 0, dom = active < 0 ? 0 : active, pk = -1, pt = 0;
+    if (fr.top < H * 0.95) {
+      A = modes.dust; B = modes.word; t = (H * 0.95 - fr.top) / (H * 0.5);
+      ob = fr.top + fr.height / 2 - modes.word.cy;
+    } else if (y < heroH * 0.15) {
+      A = B = modes.word; oa = ob = -y;
+    } else if (y < aTop) {
+      A = modes.word; oa = -y; B = modes.app[0]; dom = 0;
+      t = (y - heroH * 0.15) / Math.max(1, aTop - heroH * 0.15);
+    } else if (y <= aTop + span) {
+      var p = (y - aTop) / span * n, k = Math.min(n - 1, Math.floor(p)), f = p - k;
+      pk = k; dom = k; A = B = modes.app[k];
+      if (k < n - 1 && f > 0.45) { B = modes.app[k + 1]; t = (f - 0.45) / 0.55; pt = t; dom = t < 0.5 ? k : k + 1; }
+    } else {
+      A = modes.app[n - 1]; B = modes.dust; t = (y - aTop - span) / (H * 0.6); dom = n - 1;
+    }
+    S.A = A; S.B = B; S.t = t < 0 ? 0 : t > 1 ? 1 : t; S.oa = oa; S.ob = ob;
+    /* the name crossing the first screen's text on its way to the first icon: dim it mid-flight so the text stays readable */
+    S.dim = (A === modes.word && B === modes.app[0]) ? 1 - 0.8 * Math.sin(S.t * 3.14159) : 1;
+    setActive(dom);
+    /* the words follow the same scroll: the old app lifts out, the next one rises in */
+    for (var i = 0; i < n; i++) {
+      var op = i === dom ? 1 : 0, ty = 0;
+      if (pk >= 0 && pt > 0) {
+        if (i === pk) { op = 1 - sm(pt * 2.2); ty = -pt * 70; }
+        else if (i === pk + 1) { op = sm(pt * 2.2 - 1.2); ty = (1 - pt) * 70; }
+        else op = 0;
+      }
+      panels[i].style.opacity = op.toFixed(3);
+      panels[i].style.transform = 'translateY(' + ty.toFixed(1) + 'px)';
+    }
+  }
+  function frame() {
+    raf = requestAnimationFrame(frame);
+    var A = S.A, B = S.B, t = S.t, blend = A !== B && t > 0 && t < 1;
+    var M = (A === B || t <= 0) ? A : B, mo = (A === B || t <= 0) ? S.oa : S.ob;
+    var i, R = Math.max(80, W * 0.075), R2 = R * R, live = performance.now() - P.t < 2500;
+    var px = live ? P.x : -9999, py = live ? P.y : -9999, amp = Math.min(W, H) * 0.17, gx, gy, mv = 0;
+    for (i = 0; i < N; i++) {
+      if (blend) {
+        var e = sm(t * 1.6 - 0.6 * DL[i]); E[i] = e;
+        var ax = A.tx[i], ay = A.ty[i] + S.oa, w = Math.sin(e * 3.14159) * amp * (0.25 + DL[i]);
+        gx = ax + (B.tx[i] - ax) * e + Math.cos(AN[i]) * w;
+        gy = ay + (B.ty[i] + S.ob - ay) * e + Math.sin(AN[i]) * w;
+      } else { gx = M.tx[i]; gy = M.ty[i] + mo; }
+      var vx = (VX[i] + (gx - X[i]) * 0.075) * 0.80, vy = (VY[i] + (gy - Y[i]) * 0.075) * 0.80;
+      var dx = X[i] - px, dy = Y[i] - py, d2 = dx * dx + dy * dy;
+      if (d2 < R2) { var d = Math.sqrt(d2) + .01, f = (1 - d / R) * 9; vx += dx / d * f; vy += dy / d * f; }
+      VX[i] = vx; VY[i] = vy; X[i] += vx; Y[i] += vy;
+      var sp = vx * vx + vy * vy; if (sp > mv) mv = sp;
+    }
+    var goal = blend ? A.size + (B.size - A.size) * sm(t) : M.size;
+    size += (goal - size) * 0.2;
+    ctx.fillStyle = 'rgba(24,25,27,0.42)'; ctx.fillRect(0, 0, cv.width, cv.height);
+    var s = size * DPR, h = s / 2, n, idx, j, b;
+    ctx.globalAlpha = S.dim;
+    if (blend) {
+      for (b = A.b, n = 0; n < b.length; n++) {
+        ctx.fillStyle = b[n].style; idx = b[n].idx;
+        for (j = 0; j < idx.length; j++) { i = idx[j]; if (E[i] < 0.5) ctx.fillRect(X[i] * DPR - h, Y[i] * DPR - h, s, s); }
+      }
+      for (b = B.b, n = 0; n < b.length; n++) {
+        ctx.fillStyle = b[n].style; idx = b[n].idx;
+        for (j = 0; j < idx.length; j++) { i = idx[j]; if (E[i] >= 0.5) ctx.fillRect(X[i] * DPR - h, Y[i] * DPR - h, s, s); }
+      }
+    } else {
+      for (b = M.b, n = 0; n < b.length; n++) {
+        ctx.fillStyle = b[n].style; idx = b[n].idx;
+        for (j = 0; j < idx.length; j++) { i = idx[j]; ctx.fillRect(X[i] * DPR - h, Y[i] * DPR - h, s, s); }
+      }
+    }
+    ctx.globalAlpha = 1;
+    /* Nothing moving for ~1 s: stop drawing until the next scroll or touch. An idle page costs no battery. */
+    calm = (mv < 0.0004 && Math.abs(goal - size) < 0.01) ? calm + 1 : 0;
+    if (calm > 60) { cancelAnimationFrame(raf); raf = 0; calm = 0; }
+  }
+  function wake() { calm = 0; if (!raf && S.A) raf = requestAnimationFrame(frame); }
+
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(function () { ticking = false; decide(); wake(); }); }
+  }, { passive: true });
+  /* The points shy away from a mouse pointer. A finger is on the glass to scroll, not to point: it must not
+     tear the icon apart every time it lands, so touch only scatters on a real tap (click). */
+  window.addEventListener('pointermove', function (e) { if (e.pointerType !== 'mouse') return; P.x = e.clientX; P.y = e.clientY; P.t = performance.now(); wake(); }, { passive: true });
+  window.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('a, button')) return;
+    P.x = e.clientX; P.y = e.clientY; if (!coarse) P.t = performance.now();
+    wake();
+    for (var i = 0; i < N; i++) {
+      var dx = X[i] - P.x, dy = Y[i] - P.y, d = Math.sqrt(dx * dx + dy * dy) + 1, f = Math.min(34, 4200 / d);
+      VX[i] += dx / d * f; VY[i] += dy / d * f;
+    }
+  }, { passive: true });
+  document.querySelectorAll('[data-go]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      var k = +el.dataset.go, span = Math.max(1, apps.offsetHeight - (apps.firstElementChild.offsetHeight || H));
+      window.scrollTo({ top: apps.offsetTop + span * (k + 0.2) / panels.length, behavior: 'smooth' });
+    });
+  });
+  var rt = 0;
+  /* A phone's address bar sliding in or out fires resize with the same width: rebuilding there would reshuffle
+     the swarm mid-scroll. Rebuild only for a real change (rotation, window resize). */
+  window.addEventListener('resize', function () {
+    var w = cv.getBoundingClientRect().width, hh = window.innerHeight;
+    if (Math.abs(w - builtW) < 1 && Math.abs(hh - builtH) < 160) return;
+    clearTimeout(rt); rt = setTimeout(function () { build(); wake(); }, 140);
+  });
+
+  function boot() { build(); if (!raf) raf = requestAnimationFrame(frame); }
+  var waits = panels.map(function (p) {
+    var im = p.querySelector('.icon');
+    return im.complete ? Promise.resolve() : new Promise(function (res) { im.addEventListener('load', res); im.addEventListener('error', res); });
+  });
+  if (document.fonts && document.fonts.load) waits.push(document.fonts.load('800 100px Urbanist').catch(function () {}));
+  Promise.all(waits).then(boot, boot);
+})();
+</script>
+</body>
+</html>
