@@ -23,3 +23,12 @@ ne yaptığı (üç cümle) ve durum tablosu. Ekranlar mağaza görsellerinden k
 Rafım için `-en-` ve `-tr-` dosyaları vardır, `_build.py` içindeki çift yolu Türkçe sayfada değiştirir. Kepler Drift
 ekranları oynanabilir prototipten alınmıştır ve sayfada öyle yazar. Durum satırı değişince (yayın, mağaza bağlantısı)
 `index.html` ile `_build.py` içindeki çift birlikte güncellenir.
+
+## Marka: logo, zemin, geçişler (2026-11-11)
+
+- **Logo:** iki direk ve onlara yaslanan iki çubuktan oluşan M (`assets/mark.svg`, `_build.py` `MARKA_SVG`). Ana sayfada
+  ortadaki iki çubuk devrilip direklere yaslanarak M'yi kurar; büyük yazıdaki M'ye dokununca yeniden oynar.
+- **Zemin:** siyah yerine uyarı sarısı `#ffd231` ve mürekkep `#15140f`. Sarı bölümler (`.lite`) kendi zeminini taşır,
+  yuvarlak kenarlı bir sayfa gibi renkli sahnelerin üstünden kayar. Üst şerit altındaki zemine göre renk değiştirir.
+- **Geçişler:** sahne renkleri OKLab'da ve dar bir bantta karışır; başlık perdenin altından çıkar; ikon ve başlık
+  kaydırmayla hafifçe süzülür (`--q`). Hareketi azalt açıkken hiçbiri oynamaz.

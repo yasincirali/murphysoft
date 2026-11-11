@@ -32,9 +32,9 @@ CSS = (ROOT / "assets" / "site.css").read_text(encoding="utf-8").strip()
 # buraya geri eklenirse betik o stili site.css ile ezer.
 EL_SAYFALARI = ["404.html", "birdie-smash/index.html", "coverline/index.html", "pocket-money/index.html"]
 
-MARKA_SVG = ('<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="none" '
-             'stroke="currentColor" stroke-width="2"/><path d="M7.5 12.5l3 3 6-7" fill="none" stroke="currentColor" '
-             'stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+# Logo (2026-11-11): iki direk ve onlara yaslanan iki çubuktan M; ana sayfada çubuklar devrilerek kurulur.
+MARKA_SVG = ('<svg viewBox="8.5 11.5 83 77" aria-hidden="true"><g stroke="currentColor" stroke-width="17" stroke-linecap="round" fill="none">'
+             '<path d="M17 20V80"/><path d="M83 20V80"/><path d="M50 80L17 20"/><path d="M50 80L83 20"/></g></svg>')
 
 # Uygulama klasörü -> görünen ad (yasal sayfanın üst şeridinde uygulama sayfasına dönüş).
 # coverline ve pocket-money (2026-11-10): mağazadaki gizlilik bağlantısı GitHub dosyasıydı (Rafım) ya da hiç yoktu
@@ -140,7 +140,7 @@ def main() -> None:
 # aşağıdaki çiftlerle ondan üretilir, elle düzenlenmez. Her çift kaynakta bulunmak ZORUNDA: İngilizce metin
 # değişip çevirisi unutulursa betik burada durur, yarı çevrilmiş sayfa yayına çıkmaz. Sıra önemli (uzun önce).
 TR = [
-    ('<html lang="en">', '<html lang="tr">'),
+    ('<html lang="en"', '<html lang="tr"'),
     ('content="Murphysoft is an independent studio making small games and apps: Sandık, Birdie Smash, My Pocket Money, Coverline and Kepler Drift."',
      'content="Murphysoft küçük oyunlar ve uygulamalar yapan bağımsız bir stüdyodur: Sandık, Birdie Smash, Harçlıklarım, Rafım ve Kepler Drift."'),
     ('content="Whatever can go wrong, we test first. Small games and apps that respect your time and your privacy."',
