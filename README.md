@@ -26,9 +26,11 @@ ekranları oynanabilir prototipten alınmıştır ve sayfada öyle yazar. Durum 
 
 ## Marka: logo, zemin, geçişler (2026-11-11)
 
-- **Logo:** iki direk ve onlara yaslanan iki çubuktan oluşan M (`assets/mark.svg`, `_build.py` `MARKA_SVG`). Ana sayfada
-  ortadaki iki çubuk devrilip direklere yaslanarak M'yi kurar; büyük yazıdaki M'ye dokununca yeniden oynar.
+- **Logo (yasin: "Kayan y"):** ayrı simge yok; yazının içindeki y 13 derece kaymış durur. Sekme ikonu ve alt sayfalar
+  için y harfi yola çevrildi (`assets/mark.svg`, `_build.py` `MARKA_SVG`). Açılışta harfler yükselir, y en son kayar.
 - **Zemin:** siyah yerine uyarı sarısı `#ffd231` ve mürekkep `#15140f`. Sarı bölümler (`.lite`) kendi zeminini taşır,
   yuvarlak kenarlı bir sayfa gibi renkli sahnelerin üstünden kayar. Üst şerit altındaki zemine göre renk değiştirir.
 - **Geçişler:** sahne renkleri OKLab'da ve dar bir bantta karışır; başlık perdenin altından çıkar; ikon ve başlık
   kaydırmayla hafifçe süzülür (`--q`). Hareketi azalt açıkken hiçbiri oynamaz.
+- **Sahne dekoru:** her sahnenin zemini uygulamanın dünyasından ton üstü ton çizilir (`svg.deco`): dalgalar, kort, bozuk
+  paralar, raflar, yıldızlar. Katmanlar `--q` ile farklı hızda kayar. Sarı bölümlerde matbaa noktası, üstte ince kumlanma.

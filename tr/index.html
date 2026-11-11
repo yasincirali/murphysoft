@@ -146,25 +146,42 @@ section { min-height: calc(100 * var(--vh)); position: relative; display: grid; 
 .hero { border-radius: 0 0 clamp(28px, 5vw, 64px) clamp(28px, 5vw, 64px); }
 .method { border-radius: clamp(28px, 5vw, 64px) clamp(28px, 5vw, 64px) 0 0; }
 .nav { color: var(--on); transition: color .2s linear; }
-.brand { gap: .42em; }
-.brand svg { height: .74em; width: auto; flex: none; overflow: visible; }
-/* Logo: iki direk, ortada duran iki çubuk yana devrilir ve direklere yaslanır; M böyle oluşur.
-   "Ters gidebilecek her şey" düşer, biz tutacak yeri önceden koyarız. */
-.fl, .fr { transform-box: view-box; transform-origin: 50px 80px; }
-@keyframes fallL { 0% { transform: rotate(28.8deg); } 18% { transform: rotate(28.8deg); animation-timing-function: cubic-bezier(.6,0,.9,.5); } 56% { transform: rotate(0); } 68% { transform: rotate(6deg); } 80% { transform: rotate(0); } 89% { transform: rotate(1.6deg); } 100% { transform: rotate(0); } }
-@keyframes fallR { 0% { transform: rotate(-28.8deg); } 18% { transform: rotate(-28.8deg); animation-timing-function: cubic-bezier(.6,0,.9,.5); } 56% { transform: rotate(0); } 68% { transform: rotate(-6deg); } 80% { transform: rotate(0); } 89% { transform: rotate(-1.6deg); } 100% { transform: rotate(0); } }
-.play .fl { animation: fallL 1.15s both; } .play .fr { animation: fallR 1.15s .09s both; }
-.word .m { cursor: pointer; align-self: baseline; }
-.word .m svg { height: .7em; width: auto; display: block; overflow: visible; margin-right: .03em; }
-/* Açılış sırası: M kurulur, harfler sırayla yükselir, alt satır en son gelir. `translate` ayrı özelliktir; y'nin eğik
+/* Logo yazının kendisidir (yasin 2026-11-11, "Kayan y"): ayrı simge yok, y yerinden kaymış durur. */
+.brand { letter-spacing: -0.03em; font-size: 1.3rem; }
+.by { display: inline-block; color: var(--gold); transform: translateY(.14em) rotate(13deg); transform-origin: 50% 85%; }
+@keyframes slip { 0% { transform: none; color: inherit; } 55% { transform: translateY(.21em) rotate(18deg); } 78% { transform: translateY(.15em) rotate(11deg); } 100% { transform: translateY(.16em) rotate(13deg); } }
+/* Açılış sırası: harfler sırayla yükselir, y en son kayar, alt satır onu izler. `translate` ayrı özelliktir; y'nin eğik
    duruşunu (transform) ve "Bir şeyi boz" düşüşünü bozmaz. */
 @keyframes rise { from { opacity: 0; translate: 0 .32em; } to { opacity: 1; translate: 0 0; } }
-.word span:not(.m) { animation: rise .8s var(--ease) both; animation-delay: calc(.5s + var(--i) * 48ms); }
-.heroFoot > * { animation: rise .9s var(--ease) 1.15s both; } .heroFoot > :nth-child(2) { animation-delay: 1.27s; }
+.word span { animation: rise .8s var(--ease) both; animation-delay: calc(.15s + var(--i) * 48ms); }
+.word .y { animation: rise .8s var(--ease) calc(.15s + var(--i) * 48ms) both, slip .9s cubic-bezier(.3,1.3,.5,1) 1.15s backwards; }
+.heroFoot > * { animation: rise .9s var(--ease) .85s both; } .heroFoot > :nth-child(2) { animation-delay: .97s; }
 /* Sahne başlığı perdenin altından çıkar; ikon ve başlık kaydırmayla hafifçe ters yöne süzülür (--q: -1..1). */
 .app .txt > h2 { opacity: 1; clip-path: inset(0 -5% 110% -5%); transform: translateY(.4em); transition: clip-path .9s var(--ease), transform .9s var(--ease); translate: calc(var(--q, 0) * -2.2vw) 0; }
 .app.in .txt > h2 { clip-path: inset(-20% -5% -20% -5%); transform: none; }
 .app .tilebox { translate: 0 calc(var(--q, 0) * 5vh); }
+
+/* ---------- sahne dekoru (2026-11-11, yasin: "düz renkler yerine neler yapılabilir") ----------
+   Her sahnenin zemini o uygulamanın dünyasından çizilir: Sandık'ta ikonundaki dalgalar, Birdie'de kort, Harçlıklarım'da
+   bozuk paralar, Rafım'da raflar, Kepler'de yıldızlar ve bir gezegen kenarı. Ton üstü ton çizilir ki yazı okunur kalsın;
+   katmanlar kaydırmayla farklı hızda kayar (--q). Sarı bölümlerde matbaa noktası, her şeyin üstünde ince bir kumlanma. */
+.deco { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.deco .d1, .deco .d2, .deco .d3 { will-change: transform; }
+.waves { top: auto; height: 78%; } .waves path { fill: #000; }
+.waves .d1 { fill-opacity: .08; transform: translateX(calc(var(--q, 0) * 70px)); } .waves .d2 { fill-opacity: .1; transform: translateX(calc(var(--q, 0) * -50px)); } .waves .d3 { fill-opacity: .13; transform: translateX(calc(var(--q, 0) * 34px)); }
+.court { top: auto; height: 50%; transform: translateY(calc(var(--q, 0) * 46px)); transform-origin: 50% 100%; }
+.coins .d1 { transform: translateY(calc(var(--q, 0) * 70px)); } .coins .d2 { transform: translateY(calc(var(--q, 0) * -46px)); }
+.shelves .d1 { transform: translateX(calc(var(--q, 0) * 30px)); }
+.space .d1 { transform: translateY(calc(var(--q, 0) * 18px)); } .space .d2 { transform: translateY(calc(var(--q, 0) * 62px)); } .space .d3 { transform: translateY(calc(var(--q, 0) * -70px)); }
+@keyframes tw { 50% { opacity: .15; } }
+.space .tw { animation: tw 3.2s ease-in-out infinite; } .space .tw:nth-child(3n) { animation-duration: 4.6s; animation-delay: -1.4s; } .space .tw:nth-child(4n) { animation-duration: 2.4s; animation-delay: -.8s; }
+.hero::before, .method::before, .contact::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle, rgba(21,20,15,.2) 1.7px, transparent 2.2px) 0 0 / 18px 18px; }
+.hero::before { -webkit-mask: linear-gradient(118deg, transparent 38%, #000 115%); mask: linear-gradient(118deg, transparent 38%, #000 115%); }
+.method::before { -webkit-mask: linear-gradient(200deg, #000 -10%, transparent 42%); mask: linear-gradient(200deg, #000 -10%, transparent 42%); }
+.contact::before { -webkit-mask: linear-gradient(20deg, #000 -15%, transparent 40%); mask: linear-gradient(20deg, #000 -15%, transparent 40%); }
+.hero > .wrap, .method > .wrap, .contact > .wrap { position: relative; }
+body::after { content: ""; position: fixed; inset: 0; z-index: 8; pointer-events: none; opacity: .32; mix-blend-mode: soft-light;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E"); }
 
 /* ---------- yöntem + iletişim ---------- */
 .method h2, .contact h2 { font-weight: 800; font-size: clamp(2.1rem, 1.2rem + 4vw, 4.5rem); line-height: .98; letter-spacing: -0.04em; max-width: 12em; text-wrap: balance; }
@@ -198,6 +215,7 @@ footer p { display: flex; align-items: center; min-height: 44px; }
   .shots img { flex: 0 0 58vw; max-width: 270px; scroll-snap-align: center; }
   .shots img:nth-child(n) { transform: none; }
   .facts dl div { grid-template-columns: 6.2em minmax(0, 1fr); }
+  .court { height: 30%; }
   .receipt { right: 20px; }
   .receipt { width: 37vw; font-size: 10px; padding: 12px 10px 18px; top: 58px; }
 }
@@ -205,7 +223,8 @@ footer p { display: flex; align-items: center; min-height: 44px; }
   html { scroll-behavior: auto; }
   .tilebox { opacity: 1; transform: none; }
   .shots img:nth-child(n) { transform: none; }
-  .fl, .fr, .word span, .heroFoot > * { animation: none !important; }
+  .word span, .heroFoot > * { animation: none !important; }
+  .deco, .deco * { transform: none !important; animation: none !important; }
   .app .txt > h2, .app .tilebox { translate: none; clip-path: none; }
   * { transition-duration: 1ms !important; }
 }
@@ -214,7 +233,7 @@ footer p { display: flex; align-items: center; min-height: 44px; }
 <body>
 <!-- index.html kaynağından _build.py ile üretildi; elle düzenleme. -->
 <a class="skip" href="#sandik">Uygulamalara geç</a>
-<header class="nav wrap"><a class="brand" href="#top"><svg viewBox="8.5 11.5 83 77" aria-hidden="true"><g stroke="currentColor" stroke-width="17" stroke-linecap="round" fill="none"><path d="M17 20V80"/><path d="M83 20V80"/><path class="fl" d="M50 80L17 20"/><path class="fr" d="M50 80L83 20"/></g></svg><span>Murphysoft</span></a><a class="lang" href="/" lang="en" hreflang="en" aria-label="English">EN</a></header>
+<header class="nav wrap"><a class="brand" href="#top" aria-label="Murphysoft">Murph<span class="by">y</span>soft</a><a class="lang" href="/" lang="en" hreflang="en" aria-label="English">EN</a></header>
 
 <main>
   <section class="hero lite" id="top" data-bg="#ffd231">
@@ -235,6 +254,7 @@ footer p { display: flex; align-items: center; min-height: 44px; }
   </section>
 
   <section class="app" id="sandik" data-bg="#ad590c">
+    <svg class="deco waves" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true"><path class="d1" d="M-100 250C80 190 260 330 480 250S820 140 1100 230V600H-100Z"/><path class="d2" d="M-100 380C140 300 330 450 560 370S860 280 1100 350V600H-100Z"/><path class="d3" d="M-100 500C120 430 380 550 620 470S900 420 1100 480V600H-100Z"/></svg>
     <svg class="chart" viewBox="0 0 1000 400" preserveAspectRatio="none" aria-hidden="true">
       <path d="M0 330 C90 320 130 250 220 262 S340 300 420 214 S560 150 640 176 S780 96 860 104 S960 52 1000 40" fill="none" stroke="#fff" stroke-width="5" vector-effect="non-scaling-stroke"/>
       <path d="M0 350 C200 338 400 312 600 286 S900 236 1000 220" fill="none" stroke="#fff" stroke-width="2.5" stroke-dasharray="3 10" vector-effect="non-scaling-stroke"/>
@@ -263,6 +283,7 @@ footer p { display: flex; align-items: center; min-height: 44px; }
   </section>
 
   <section class="app" id="birdie" data-bg="#bf2c3b">
+    <svg class="deco court" viewBox="-100 320 1200 380" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><g fill="none" stroke="#fff" stroke-width="4" stroke-opacity=".17"><path d="M-100 690L300 330H700L1100 690Z"/><path d="M-10 690L336 330M1010 690L664 330M500 690V470M500 400V330"/><path d="M-56 650H1056M67 540H933M233 390H767M283 345H717"/></g><path d="M144 470H856V398H144Z" fill="#fff" fill-opacity=".04"/><path d="M144 398H856" stroke="#fff" stroke-opacity=".34" stroke-width="5"/><path d="M144 398V490M856 398V490" stroke="#fff" stroke-opacity=".25" stroke-width="5"/></svg>
     <div class="wrap">
       <div class="tilebox"><button class="tile" type="button" aria-label="Birdie Smash ikonu: dokun, topa vur"><img src="/assets/apps/birdie-smash.png" alt=""></button></div>
       <div class="txt">
@@ -287,6 +308,7 @@ footer p { display: flex; align-items: center; min-height: 44px; }
   </section>
 
   <section class="app" id="harclik" data-bg="#673cd2">
+    <svg class="deco coins" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g class="d1"><circle cx="120" cy="150" r="62" fill="#fff" fill-opacity=".07"/><circle cx="120" cy="150" r="43" fill="none" stroke="#fff" stroke-opacity=".11" stroke-width="4"/><circle cx="880" cy="120" r="92" fill="#fff" fill-opacity=".07"/><circle cx="880" cy="120" r="64" fill="none" stroke="#fff" stroke-opacity=".11" stroke-width="6"/><circle cx="770" cy="570" r="132" fill="#fff" fill-opacity=".07"/><circle cx="770" cy="570" r="92" fill="none" stroke="#fff" stroke-opacity=".11" stroke-width="8"/><circle cx="250" cy="610" r="84" fill="#fff" fill-opacity=".07"/><circle cx="250" cy="610" r="59" fill="none" stroke="#fff" stroke-opacity=".11" stroke-width="5"/></g><g class="d2"><circle cx="520" cy="70" r="36" fill="#fff" fill-opacity=".07"/><circle cx="520" cy="70" r="25" fill="none" stroke="#fff" stroke-opacity=".11" stroke-width="2"/><circle cx="960" cy="380" r="48" fill="#fff" fill-opacity=".07"/><circle cx="960" cy="380" r="34" fill="none" stroke="#fff" stroke-opacity=".11" stroke-width="3"/><circle cx="50" cy="400" r="40" fill="#fff" fill-opacity=".07"/><circle cx="50" cy="400" r="28" fill="none" stroke="#fff" stroke-opacity=".11" stroke-width="2"/><circle cx="610" cy="650" r="30" fill="#fff" fill-opacity=".07"/><circle cx="610" cy="650" r="21" fill="none" stroke="#fff" stroke-opacity=".11" stroke-width="2"/><circle cx="410" cy="330" r="22" fill="#fff" fill-opacity=".07"/><circle cx="410" cy="330" r="15" fill="none" stroke="#fff" stroke-opacity=".11" stroke-width="2"/></g></svg>
     <div class="wrap">
       <div class="tilebox"><button class="tile" type="button" aria-label="Harçlıklarım ikonu: dokun, kumbaraya para at"><img src="/assets/apps/harcliklarim.png" alt=""></button></div>
       <div class="txt">
@@ -311,6 +333,7 @@ footer p { display: flex; align-items: center; min-height: 44px; }
   </section>
 
   <section class="app" id="rafim" data-bg="#0d6650">
+    <svg class="deco shelves" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="#fff" fill-opacity=".07"><rect x="80" y="150" width="74" height="80" rx="8"/><rect x="172" y="108" width="44" height="122" rx="10"/><circle cx="560" cy="190" r="40"/><rect x="640" y="372" width="150" height="74" rx="6"/><rect x="618" y="442" width="194" height="8" rx="3"/><rect x="860" y="350" width="56" height="100" rx="8"/><rect x="60" y="392" width="92" height="58" rx="8"/><rect x="130" y="556" width="114" height="114" rx="12"/><rect x="420" y="610" width="130" height="60" rx="8"/><rect x="800" y="580" width="60" height="90" rx="8"/></g><circle cx="187" cy="622" r="30" fill="none" stroke="#000" stroke-opacity=".14" stroke-width="6"/><g class="d1"><path d="M-300 230H1300v14H-300zM-300 450H1300v14H-300zM-300 670H1300v14H-300z" fill="#000" fill-opacity=".17"/><path d="M-300 244H1300v34H-300zM-300 464H1300v34H-300zM-300 684H1300v34H-300z" fill="#000" fill-opacity=".07"/></g></svg>
     <div class="receipt" aria-hidden="true">
       <div><span>RAFIM</span><span>FİŞ</span></div>
       <div><span>Toplanan veri</span><span>0</span></div>
@@ -344,6 +367,7 @@ footer p { display: flex; align-items: center; min-height: 44px; }
   </section>
 
   <section class="app" id="kepler" data-bg="#0a0f2c">
+    <svg class="deco space" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g class="d1" fill="#fff"><circle cx="331" cy="154" r="0.8" fill-opacity="0.33"/><circle cx="96" cy="374" r="0.9" fill-opacity="0.89"/><circle cx="88" cy="444" r="0.8" fill-opacity="0.46"/><circle cx="60" cy="579" r="0.6" fill-opacity="0.45"/><circle cx="970" cy="63" r="0.9" fill-opacity="0.56"/><circle cx="47" cy="570" r="1.1" fill-opacity="0.49"/><circle cx="120" cy="584" r="0.7" fill-opacity="0.83"/><circle cx="595" cy="584" r="0.9" fill-opacity="0.54"/><circle cx="64" cy="577" r="0.5" fill-opacity="0.43"/><circle cx="437" cy="321" r="0.8" fill-opacity="0.90"/><circle cx="254" cy="184" r="1.0" fill-opacity="0.46"/><circle cx="537" cy="506" r="1.1" fill-opacity="0.77"/><circle cx="74" cy="120" r="0.9" fill-opacity="0.41"/><circle cx="955" cy="500" r="0.8" fill-opacity="0.93" class="tw"/><circle cx="571" cy="586" r="1.1" fill-opacity="0.83"/><circle cx="358" cy="608" r="0.8" fill-opacity="0.82" class="tw"/><circle cx="95" cy="276" r="0.8" fill-opacity="0.73" class="tw"/><circle cx="718" cy="317" r="1.0" fill-opacity="0.95"/><circle cx="291" cy="395" r="1.1" fill-opacity="0.53"/><circle cx="363" cy="172" r="0.9" fill-opacity="0.62"/><circle cx="294" cy="132" r="1.0" fill-opacity="0.56"/><circle cx="508" cy="82" r="0.6" fill-opacity="0.56"/><circle cx="140" cy="440" r="1.1" fill-opacity="0.48"/><circle cx="367" cy="699" r="1.1" fill-opacity="0.92"/><circle cx="180" cy="154" r="0.7" fill-opacity="0.45"/><circle cx="603" cy="186" r="0.7" fill-opacity="0.30"/><circle cx="378" cy="624" r="0.9" fill-opacity="0.92"/><circle cx="527" cy="632" r="1.0" fill-opacity="0.78"/><circle cx="891" cy="696" r="1.1" fill-opacity="0.56"/><circle cx="106" cy="493" r="0.9" fill-opacity="0.34" class="tw"/><circle cx="213" cy="451" r="0.6" fill-opacity="0.52" class="tw"/><circle cx="0" cy="580" r="0.6" fill-opacity="0.37"/><circle cx="26" cy="72" r="1.1" fill-opacity="0.70"/><circle cx="258" cy="355" r="0.9" fill-opacity="0.61" class="tw"/><circle cx="499" cy="477" r="0.8" fill-opacity="0.50"/><circle cx="767" cy="350" r="1.0" fill-opacity="0.61"/><circle cx="528" cy="23" r="0.6" fill-opacity="0.92"/><circle cx="706" cy="556" r="1.1" fill-opacity="0.79"/><circle cx="658" cy="93" r="1.0" fill-opacity="0.47"/><circle cx="171" cy="364" r="1.0" fill-opacity="0.65"/><circle cx="337" cy="651" r="0.7" fill-opacity="0.83"/><circle cx="873" cy="199" r="1.1" fill-opacity="0.83"/><circle cx="232" cy="204" r="0.9" fill-opacity="0.53" class="tw"/><circle cx="28" cy="286" r="0.8" fill-opacity="0.43"/><circle cx="352" cy="457" r="1.1" fill-opacity="0.77"/><circle cx="997" cy="373" r="0.6" fill-opacity="0.37"/><circle cx="345" cy="209" r="0.8" fill-opacity="0.94"/><circle cx="1" cy="490" r="1.1" fill-opacity="0.52"/><circle cx="854" cy="676" r="0.6" fill-opacity="0.55"/><circle cx="204" cy="489" r="1.1" fill-opacity="0.58"/><circle cx="88" cy="405" r="0.8" fill-opacity="0.78" class="tw"/><circle cx="162" cy="174" r="1.2" fill-opacity="0.32"/><circle cx="476" cy="671" r="0.6" fill-opacity="0.84"/><circle cx="673" cy="358" r="0.6" fill-opacity="0.66" class="tw"/><circle cx="818" cy="665" r="0.6" fill-opacity="0.79"/><circle cx="892" cy="199" r="1.1" fill-opacity="0.44"/><circle cx="299" cy="513" r="0.7" fill-opacity="0.68"/><circle cx="429" cy="134" r="0.5" fill-opacity="0.78"/><circle cx="678" cy="597" r="1.1" fill-opacity="0.64"/><circle cx="899" cy="513" r="0.6" fill-opacity="0.40"/><circle cx="893" cy="450" r="1.0" fill-opacity="0.70"/><circle cx="153" cy="176" r="0.6" fill-opacity="0.70"/><circle cx="63" cy="333" r="1.0" fill-opacity="0.64"/><circle cx="795" cy="108" r="1.1" fill-opacity="0.34"/><circle cx="43" cy="100" r="0.9" fill-opacity="0.67"/><circle cx="934" cy="64" r="0.8" fill-opacity="0.70"/><circle cx="524" cy="204" r="1.0" fill-opacity="0.59"/><circle cx="489" cy="519" r="1.2" fill-opacity="0.75"/><circle cx="964" cy="265" r="1.1" fill-opacity="0.88"/><circle cx="458" cy="140" r="0.8" fill-opacity="0.56"/><circle cx="687" cy="246" r="0.8" fill-opacity="0.44"/><circle cx="125" cy="158" r="1.2" fill-opacity="0.72"/><circle cx="259" cy="140" r="1.2" fill-opacity="0.44"/><circle cx="407" cy="498" r="0.6" fill-opacity="0.73"/><circle cx="723" cy="441" r="1.2" fill-opacity="0.56"/><circle cx="365" cy="326" r="0.6" fill-opacity="0.54"/><circle cx="469" cy="451" r="1.0" fill-opacity="0.55"/><circle cx="302" cy="524" r="1.2" fill-opacity="0.37"/><circle cx="234" cy="107" r="0.6" fill-opacity="0.48"/><circle cx="185" cy="276" r="1.0" fill-opacity="0.83"/><circle cx="692" cy="264" r="0.8" fill-opacity="0.65"/><circle cx="506" cy="334" r="0.6" fill-opacity="0.34"/><circle cx="435" cy="74" r="0.7" fill-opacity="0.31" class="tw"/><circle cx="266" cy="85" r="0.9" fill-opacity="0.44"/><circle cx="124" cy="464" r="0.5" fill-opacity="0.95"/><circle cx="937" cy="274" r="0.9" fill-opacity="0.33"/><circle cx="960" cy="112" r="1.2" fill-opacity="0.47"/><circle cx="954" cy="319" r="0.9" fill-opacity="0.65"/><circle cx="456" cy="512" r="1.0" fill-opacity="0.48"/><circle cx="256" cy="37" r="0.5" fill-opacity="0.78"/></g><g class="d2" fill="#fff"><circle cx="194" cy="526" r="1.7" fill-opacity="0.91" class="tw"/><circle cx="838" cy="665" r="1.7" fill-opacity="0.62"/><circle cx="402" cy="518" r="1.5" fill-opacity="0.44"/><circle cx="203" cy="651" r="1.4" fill-opacity="0.94"/><circle cx="857" cy="132" r="1.2" fill-opacity="0.71"/><circle cx="441" cy="167" r="1.3" fill-opacity="0.73"/><circle cx="518" cy="686" r="2.3" fill-opacity="0.69"/><circle cx="46" cy="470" r="1.4" fill-opacity="0.47" class="tw"/><circle cx="372" cy="336" r="2.3" fill-opacity="0.66"/><circle cx="988" cy="316" r="1.4" fill-opacity="0.42"/><circle cx="85" cy="486" r="1.5" fill-opacity="0.73"/><circle cx="794" cy="5" r="1.3" fill-opacity="0.83"/><circle cx="600" cy="42" r="1.6" fill-opacity="0.49"/><circle cx="86" cy="599" r="2.3" fill-opacity="0.85"/><circle cx="914" cy="610" r="1.6" fill-opacity="0.51"/><circle cx="153" cy="290" r="2.0" fill-opacity="0.72" class="tw"/><circle cx="855" cy="525" r="1.9" fill-opacity="0.78"/><circle cx="142" cy="536" r="2.0" fill-opacity="0.67"/><circle cx="16" cy="598" r="2.1" fill-opacity="0.76"/><circle cx="658" cy="235" r="1.3" fill-opacity="0.33"/><circle cx="982" cy="107" r="1.6" fill-opacity="0.59" class="tw"/><circle cx="19" cy="641" r="1.8" fill-opacity="0.46"/><circle cx="467" cy="71" r="2.0" fill-opacity="0.63"/><circle cx="675" cy="538" r="1.3" fill-opacity="0.78"/><circle cx="76" cy="271" r="1.5" fill-opacity="0.79"/><circle cx="665" cy="471" r="1.7" fill-opacity="0.55"/><circle cx="700" cy="294" r="2.0" fill-opacity="0.70"/><circle cx="79" cy="614" r="1.4" fill-opacity="0.47"/><circle cx="311" cy="636" r="1.8" fill-opacity="0.31" class="tw"/><circle cx="275" cy="688" r="1.3" fill-opacity="0.44"/><circle cx="725" cy="528" r="1.5" fill-opacity="0.60"/><circle cx="915" cy="562" r="1.4" fill-opacity="0.94"/><circle cx="17" cy="296" r="1.7" fill-opacity="0.83"/><circle cx="460" cy="275" r="1.6" fill-opacity="0.90"/></g><g class="d3"><circle cx="900" cy="1010" r="470" fill="#141c4a"/><circle cx="930" cy="1040" r="470" fill="#0a0f2c" fill-opacity=".72"/><path d="M462 842A470 470 0 0 1 1340 842" fill="none" stroke="#9db6ff" stroke-opacity=".5" stroke-width="2.5"/></g></svg>
     <div class="wrap">
       <div class="tilebox"><span class="orbit" aria-hidden="true"></span><button class="tile" type="button" aria-label="Kepler Drift ikonu: basılı tut, yörüngede dön; bırak, fırlat"><img src="/assets/apps/kepler-drift.svg" alt=""></button></div>
       <div class="txt">
@@ -523,16 +547,9 @@ footer p { display: flex; align-items: center; min-height: 44px; }
   })();
 
   /* ---- açılış: harfler ---- */
-  var MARK = '<svg viewBox="8.5 11.5 83 77" aria-hidden="true"><g stroke="currentColor" stroke-width="17" stroke-linecap="round" fill="none"><path d="M17 20V80"/><path d="M83 20V80"/><path class="fl" d="M50 80L17 20"/><path class="fr" d="M50 80L83 20"/></g></svg>';
   var word = document.getElementById('word'), hint = document.getElementById('hint'), brk = document.getElementById('break');
   'Murphysoft'.split('').forEach(function (ch, i) { var s = document.createElement('span'); s.textContent = ch; s.style.setProperty('--i', i); s.setAttribute('aria-hidden', 'true');
-    if (i === 0) { s.textContent = ''; s.className = 'm play'; s.innerHTML = MARK; }
     if (ch === 'y') { s.className = 'y'; s.setAttribute('role', 'button'); s.tabIndex = 0; s.removeAttribute('aria-hidden'); s.setAttribute('aria-label', 'y harfini düzelt'); } word.appendChild(s); });
-  /* M'ye dokununca çubuklar yeniden devrilir; üst şeritteki küçük logo da sayfa açılırken bir kez kurulur. */
-  var bigM = word.querySelector('.m'), navM = document.querySelector('.brand svg');
-  function replay(el) { el.classList.remove('play'); void el.getBoundingClientRect(); el.classList.add('play'); }
-  bigM.addEventListener('click', function () { if (!reduce) replay(bigM); });
-  navM.classList.add('play');
   var y = word.querySelector('.y');
   function fixY() { if (word.classList.contains('fixed')) return; word.classList.add('fixed'); hint.textContent = 'Düzeldi. Önce biz denemiştik.'; }
   y.addEventListener('click', fixY); y.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fixY(); } });
