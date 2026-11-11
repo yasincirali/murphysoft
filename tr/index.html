@@ -113,6 +113,28 @@ section { min-height: calc(100 * var(--vh)); position: relative; display: grid; 
 .probe { width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 0 18px 5px rgba(255,255,255,.55); }
 .orbit { position: absolute; inset: -34%; border: 1.5px dashed rgba(255,255,255,.3); border-radius: 50%; pointer-events: none; }
 
+/* ---------- uygulamanın içi (2026-11-11, yasin: "görünümleri, durumları, ne yaparlar, store linkleri") ----------
+   Sahne ikonu ve oyuncağı taşır; hemen altındaki .look aynı renkte kalır ve gerçek ekranları, ne yaptığını, durumunu
+   gösterir. Ekranlar basamaklı başlar, kaydırdıkça hizalanır (--s); telefonda yana kayan şerittir. */
+.look { min-height: 0; padding-block: clamp(8px, 3vh, 40px) clamp(88px, 16vh, 190px); }
+.look .wrap { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 84px); align-items: center; }
+.shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(12px, 1.8vw, 26px); padding: 5px; border-radius: 12px; }
+.shots img { width: 100%; height: auto; display: block; border-radius: clamp(18px, 2.3vw, 32px); background: #0c0c0f; box-shadow: 0 0 0 5px #0c0c0f; opacity: 0; transition: opacity .6s var(--ease); }
+.shots img:nth-child(2) { transform: translateY(calc((1 - var(--s, 1)) * 70px)); transition-delay: .08s; }
+.shots img:nth-child(3) { transform: translateY(calc((1 - var(--s, 1)) * 140px)); transition-delay: .16s; }
+.look.in .shots img { opacity: 1; }
+.facts h3 { font-weight: 800; font-size: clamp(1.7rem, 1.1rem + 2vw, 2.75rem); line-height: 1.05; letter-spacing: -0.035em; text-wrap: balance; }
+.does { list-style: none; padding: 0; margin-top: 20px; display: grid; gap: 14px; font-size: 1.0625rem; line-height: 1.45; max-width: 31em; }
+.does b { font-weight: 700; }
+.facts dl { margin: 26px 0 0; display: grid; gap: 2px; border-radius: 18px; overflow: hidden; max-width: 34em; }
+.facts dd { margin: 0; }
+.facts dl div { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 12px; padding: 13px 16px; background: var(--chip); }
+.facts dt { font-weight: 700; }
+.facts dd a { font-weight: 700; text-underline-offset: 3px; display: inline-block; padding-block: 11px; margin-block: -11px; }
+.look .facts > * { opacity: 0; transform: translateY(18px); transition: opacity .5s var(--ease), transform .7s var(--ease); }
+.look.in .facts > * { opacity: 1; transform: none; }
+.look.in .facts > :nth-child(2) { transition-delay: .07s; } .look.in .facts > :nth-child(3) { transition-delay: .14s; }
+
 /* ---------- yöntem + iletişim ---------- */
 .method h2, .contact h2 { font-weight: 800; font-size: clamp(2.1rem, 1.2rem + 4vw, 4.5rem); line-height: .98; letter-spacing: -0.04em; max-width: 12em; text-wrap: balance; }
 .rows { margin-top: clamp(24px, 5vh, 48px); display: grid; }
@@ -139,12 +161,19 @@ footer p { display: flex; align-items: center; min-height: 44px; }
   .chart { height: 17%; }
   .heroFoot { grid-template-columns: 1fr; gap: 12px; }
   #kepler .tilebox { margin: 9vw 0 12vw 17vw; }
+  .look .wrap { grid-template-columns: 1fr; gap: 26px; }
+  .shots { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: -20px; padding: 6px 20px; scrollbar-width: none; -webkit-overflow-scrolling: touch; border-radius: 0; }
+  .shots::-webkit-scrollbar { display: none; }
+  .shots img { flex: 0 0 58vw; max-width: 270px; scroll-snap-align: center; }
+  .shots img:nth-child(n) { transform: none; }
+  .facts dl div { grid-template-columns: 6.2em minmax(0, 1fr); }
   .receipt { right: 20px; }
   .receipt { width: 37vw; font-size: 10px; padding: 12px 10px 18px; top: 58px; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .tilebox { opacity: 1; transform: none; }
+  .shots img:nth-child(n) { transform: none; }
   * { transition-duration: 1ms !important; }
 }
 </style>
@@ -189,6 +218,17 @@ footer p { display: flex; align-items: center; min-height: 44px; }
     </div>
   </section>
 
+  <section class="look" data-bg="#ad590c" aria-labelledby="sandik-look">
+    <div class="wrap">
+      <div class="shots" tabindex="0" role="group" aria-label="Sandık ekranları"><img src="/assets/shots/sandik-1.webp" width="520" height="1130" loading="lazy" decoding="async" alt="Sandık portföy ekranı ve dağılım halkası"><img src="/assets/shots/sandik-2.webp" width="520" height="1130" loading="lazy" decoding="async" alt="Sandık performans ekranı ve bir yıllık getiri grafiği"><img src="/assets/shots/sandik-3.webp" width="520" height="1130" loading="lazy" decoding="async" alt="Sandık’ta bir hissenin mum grafiği"></div>
+      <div class="facts">
+        <h3 id="sandik-look">Sandık ne yapar</h3>
+        <ul class="does"><li><b>Her şey tek toplamda.</b> Hisse, fon, altın, döviz ve kripto canlı fiyatlarla tek bir sayıda toplanır.</li><li><b>Güvenebileceğin getiri.</b> Paranın istediğin dönemde ne kazandırdığını enflasyonun yanında görürsün.</li><li><b>Grafik, alarm, takip listesi.</b> Mum grafikler, fiyat alarmları ve henüz almadıkların için bir liste.</li></ul>
+        <dl><div><dt>Durum</dt><dd><a href="https://apps.apple.com/tr/app/id6786837699">App Store</a> ve <a href="https://play.google.com/store/apps/details?id=com.sandik.app">Google Play</a>’de yayında</dd></div><div><dt>Fiyat</dt><dd>Ücretsiz. Premium isteğe bağlı.</dd></div><div><dt>Dil</dt><dd>Türkçe, İngilizce beta</dd></div></dl>
+      </div>
+    </div>
+  </section>
+
   <section class="app" id="birdie" data-bg="#bf2c3b">
     <div class="wrap">
       <div class="tilebox"><button class="tile" type="button" aria-label="Birdie Smash ikonu: dokun, topa vur"><img src="/assets/apps/birdie-smash.png" alt=""></button></div>
@@ -202,6 +242,17 @@ footer p { display: flex; align-items: center; min-height: 44px; }
     </div>
   </section>
 
+  <section class="look" data-bg="#bf2c3b" aria-labelledby="birdie-look">
+    <div class="wrap">
+      <div class="shots" tabindex="0" role="group" aria-label="Birdie Smash ekranları"><img src="/assets/shots/birdie-tr-1.webp" width="520" height="1130" loading="lazy" decoding="async" alt="Birdie Smash maçı: filede sıçrayarak smaç"><img src="/assets/shots/birdie-tr-2.webp" width="520" height="1130" loading="lazy" decoding="async" alt="Birdie Smash kariyer haritası, Asya Turu"><img src="/assets/shots/birdie-tr-3.webp" width="520" height="1130" loading="lazy" decoding="async" alt="Birdie Smash dolabı: oyuncu ve raket seçimi"></div>
+      <div class="facts">
+        <h3 id="birdie-look">Birdie Smash nasıl oynanır</h3>
+        <ul class="does"><li><b>Kaydır ve vur.</b> Zıpla, smacı zamanla, sayıyı al. Raketin sesi her vuruşta değişir.</li><li><b>Tırmanılacak bir kariyer.</b> Mahalle salonundan Dünya Finali’ne dört tur ve 24 rakip.</li><li><b>Senin oyuncun, senin raketin.</b> Karakterini seç, raketi oyun tarzına göre ayarla.</li></ul>
+        <dl><div><dt>Durum</dt><dd>TestFlight’ta test ediliyor. Sırada App Store yayını var.</dd></div><div><dt>Fiyat</dt><dd>Ücretsiz oynanır</dd></div><div><dt>Hesap</dt><dd>Yok. İnternetsiz oynanır.</dd></div></dl>
+      </div>
+    </div>
+  </section>
+
   <section class="app" id="harclik" data-bg="#673cd2">
     <div class="wrap">
       <div class="tilebox"><button class="tile" type="button" aria-label="Harçlıklarım ikonu: dokun, kumbaraya para at"><img src="/assets/apps/harcliklarim.png" alt=""></button></div>
@@ -211,6 +262,17 @@ footer p { display: flex; align-items: center; min-height: 44px; }
         <p class="desc">7–15 yaş çocuklar için kumbara. Dört karakter birikimle birlikte büyür. Reklam yok, takip yok.</p>
         <p class="toyline" aria-live="polite">Kumbaraya dokun, para at. <b id="jar"></b></p>
         <div class="acts"><a class="btn line" href="/pocket-money/">Destek ve gizlilik</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="look" data-bg="#673cd2" aria-labelledby="harclik-look">
+    <div class="wrap">
+      <div class="shots" tabindex="0" role="group" aria-label="Harçlıklarım ekranları"><img src="/assets/shots/pocket-tr-1.webp" width="520" height="1130" loading="lazy" decoding="async" alt="Harçlıklarım kamp ekranı: ateşin çevresinde üç karakter"><img src="/assets/shots/pocket-tr-2.webp" width="520" height="1130" loading="lazy" decoding="async" alt="Harçlıklarım karakter ekranı: altını tutan Tortu"><img src="/assets/shots/pocket-tr-3.webp" width="520" height="1130" loading="lazy" decoding="async" alt="Harçlıklarım dersi: birikim üzerine tek soru"></div>
+      <div class="facts">
+        <h3 id="harclik-look">Harçlıklarım ne yapar</h3>
+        <ul class="does"><li><b>Yüzü olan birikim.</b> Her karakter bir birikim türünü tutar: altın, euro, nakit. Biriktirmek için karakteri beslersin.</li><li><b>İki sayı, grafik yok.</b> Çocuk toplamı ve ne kadar değiştiğini görür. Başka bir şey yok.</li><li><b>Kısa dersler.</b> Birikim üzerine küçük fikirler, her birinde tek soru.</li></ul>
+        <dl><div><dt>Durum</dt><dd>Geliştiriliyor, TestFlight’ta test ediliyor</dd></div><div><dt>Yaş</dt><dd>7–15</dd></div><div><dt>Gizlilik</dt><dd>Reklam yok, takip yok. Veri cihazda kalır.</dd></div></dl>
       </div>
     </div>
   </section>
@@ -237,6 +299,17 @@ footer p { display: flex; align-items: center; min-height: 44px; }
     </div>
   </section>
 
+  <section class="look" data-bg="#0d6650" aria-labelledby="rafim-look">
+    <div class="wrap">
+      <div class="shots" tabindex="0" role="group" aria-label="Rafım ekranları"><img src="/assets/shots/coverline-tr-1.webp" width="520" height="1130" loading="lazy" decoding="async" alt="Rafım raf ekranı: ürünler ve kalan günler"><img src="/assets/shots/coverline-tr-2.webp" width="520" height="1130" loading="lazy" decoding="async" alt="Rafım haklar ekranı: bir kulaklık için"><img src="/assets/shots/coverline-tr-3.webp" width="520" height="1130" loading="lazy" decoding="async" alt="Rafım sorun ekranı: önerilen sıradaki adım"></div>
+      <div class="facts">
+        <h3 id="rafim-look">Rafım ne yapar</h3>
+        <ul class="does"><li><b>Eşyaların için bir raf.</b> Ürünü fişi ve fotoğrafıyla ekle. Gezebildiğin bir rafta durur.</li><li><b>Hâlâ geçerli haklar.</b> İade süresi, yasal hak ve garanti; alış tarihine ve ülkeye göre hesaplanır.</li><li><b>Bozulunca sıradaki adım.</b> Ne olduğunu söyle, tek bir yol önerisi al. Hukuki tavsiye değildir.</li></ul>
+        <dl><div><dt>Durum</dt><dd>Geliştiriliyor, TestFlight’ta test ediliyor</dd></div><div><dt>Hesap</dt><dd>Yok. Her şey cihazda kalır.</dd></div><div><dt>Yurt dışındaki adı</dt><dd>Coverline</dd></div></dl>
+      </div>
+    </div>
+  </section>
+
   <section class="app" id="kepler" data-bg="#0a0f2c">
     <div class="wrap">
       <div class="tilebox"><span class="orbit" aria-hidden="true"></span><button class="tile" type="button" aria-label="Kepler Drift ikonu: basılı tut, yörüngede dön; bırak, fırlat"><img src="/assets/apps/kepler-drift.svg" alt=""></button></div>
@@ -245,6 +318,17 @@ footer p { display: flex; align-items: center; min-height: 44px; }
         <h2>Kepler Drift</h2>
         <p class="desc">Tek parmakla yörünge oyunu. Basılı tut, gezegenin çevresinde dön; bırak, fırla; yumuşak in.</p>
         <p class="toyline" aria-live="polite">Gezegene basılı tut, sonra bırak. <b id="laps"></b></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="look" data-bg="#0a0f2c" aria-labelledby="kepler-look">
+    <div class="wrap">
+      <div class="shots" tabindex="0" role="group" aria-label="Kepler Drift ekranları"><img src="/assets/shots/kepler-1.webp" width="520" height="1130" loading="lazy" decoding="async" alt="Kepler Drift prototipi: Mars yolunda, Dünya’nın yanında sonda"><img src="/assets/shots/kepler-2.webp" width="520" height="1130" loading="lazy" decoding="async" alt="Kepler Drift prototipi: sonda Dünya yörüngesinde fren yapıyor"><img src="/assets/shots/kepler-3.webp" width="520" height="1130" loading="lazy" decoding="async" alt="Kepler Drift prototipi: sonda yörüngeden ayrılıyor"></div>
+      <div class="facts">
+        <h3 id="kepler-look">Kepler Drift nasıl oynanır</h3>
+        <ul class="does"><li><b>Basılı tut, yörüngeye gir.</b> Sonda en yakın gezegene kilitlenip çevresinde döner. Bırakınca düz bir çizgide ayrılır.</li><li><b>Dokun, yakıt yak.</b> Biraz yakıt uçuş sırasında rotayı düzeltir.</li><li><b>Yavaş var.</b> Hedefe hız sınırının altında ulaş. Fazladan turlar frenindir.</li></ul>
+        <dl><div><dt>Durum</dt><dd>Erken sürüm. Bu ekranlar oynanabilir prototipten.</dd></div><div><dt>Görevler</dt><dd>Her güneş sistemi 12 görevlik bir bölümdür.</dd></div><div><dt>Platform</dt><dd>Önce iPhone</dd></div></dl>
       </div>
     </div>
   </section>
@@ -289,6 +373,7 @@ footer p { display: flex; align-items: center; min-height: 44px; }
 
   /* ---- zemin: ekranın ortası iki bölüm arasındayken renk de ikisinin arasında ---- */
   var chart = document.querySelector('.chart'), receipt = document.querySelector('.receipt');
+  var looks = [].slice.call(document.querySelectorAll('.look'));
   function paint() {
     var mid = innerHeight / 2, i, a = 0, t = 0;
     for (i = 0; i < secs.length; i++) {
@@ -306,6 +391,7 @@ footer p { display: flex; align-items: center; min-height: 44px; }
     document.body.style.backgroundColor = 'rgb(' + [0, 1, 2].map(function (k) { return Math.round(A[k] + (B[k] - A[k]) * t); }).join(',') + ')';
     var ps = chart.parentNode._p; chart.style.clipPath = 'inset(0 ' + ((1 - Math.min(1, ps * 1.25)) * 100).toFixed(1) + '% 0 0)';
     receipt.style.setProperty('--p', Math.min(1, receipt.parentNode._p * 1.3).toFixed(3));
+    for (i = 0; i < looks.length; i++) looks[i].style.setProperty('--s', Math.min(1, looks[i]._p * 1.7).toFixed(3));
   }
   var tick = false;
   addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(function () { tick = false; paint(); }); } }, { passive: true });
@@ -314,6 +400,9 @@ footer p { display: flex; align-items: center; min-height: 44px; }
   /* ---- sahneye giriş: ikon takla atıp doğru yüzüyle iner ---- */
   var io = new IntersectionObserver(function (es) { es.forEach(function (e) { e.target.classList.toggle('in', e.isIntersecting); }); }, { threshold: 0.35 });
   document.querySelectorAll('.app').forEach(function (s) { io.observe(s); });
+  /* Ekranlar bir kez görünür ve öyle kalır: geri kaydırınca yeniden solup gelmesi dikkat dağıtır. */
+  var io2 = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io2.unobserve(e.target); } }); }, { threshold: 0.12 });
+  looks.forEach(function (s) { io2.observe(s); });
 
   /* ---- fare ikonun üstündeyken ikon bakar ---- */
   document.querySelectorAll('.app').forEach(function (s) {

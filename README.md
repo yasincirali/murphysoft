@@ -15,3 +15,11 @@ Stüdyo sitesi (GitHub Pages, `main` kökü, özel alan `CNAME`).
 - Mobil akıcılık (2026-11-10): hareket süreleri ve eğrileri Astryx tasarım sisteminin (Meta, MIT) varsayılan temposundan alındı; kütüphanenin kendisi (React + StyleX) siteye girmedi, "dış kaynak yok" ve tek dosya kuralı sürüyor. Yükseklikler `svh` (adres çubuğu), dokunmatik ekranda kaydırma uygulamanın üstünde durur (scroll-snap proximity), parmak sürüyü dağıtmaz (yalnız dokunuş), adres çubuğu resize'ı sürüyü yeniden kurmaz, sürü durunca çizim durur (pil).
 - Dil (2026-11-10): varsayılan İngilizce `/`, Türkçe `/tr/`. `tr/index.html` elle düzenlenmez: `_build.py` içindeki `TR` çiftleriyle `index.html`'den üretilir; İngilizce metin değişince çift güncellenmezse betik durur. Türkçe ğ/ş/İ için `assets/fonts/urbanist-latin-ext.woff2` (OFL, @fontsource-variable/urbanist 5.3.0).
 - Ana sayfa (2026-11-11, "Renk sahnesi", yasin: "Swarm içime sinmedi"): nokta sürüsü kalktı. Her bölüm bir ekran; zemin kaydırmayla uygulamanın rengine akar ve her sahnede uygulamanın fikrini elle deneten bir oyuncak var (Sandık çizgisi, Birdie topu, Harçlıklarım parası, Rafım fişi, Kepler sondası). Açılışta y harfi ve "Break something". İkonlar takla atmaz (denendi, profesyonel durmadı). Yazı tipi Bricolage Grotesque (OFL, @fontsource-variable 5.3.0, `assets/fonts/bricolage-*.woff2`); Urbanist kaldırıldı. Uygulama eklemek: `section.app` + `data-bg` rengi + `_build.py` içindeki `TR` çiftleri. Bu dosyanın yukarısındaki "Swarm" ve Urbanist notları tarihseldir.
+
+## Uygulamanın içi (2026-11-11)
+
+Her uygulama sahnesinin altında aynı renkte bir `section.look` durur: üç gerçek ekran (`assets/shots/`, 520 px WebP),
+ne yaptığı (üç cümle) ve durum tablosu. Ekranlar mağaza görsellerinden küçültülür; Birdie Smash, Harçlıklarım ve
+Rafım için `-en-` ve `-tr-` dosyaları vardır, `_build.py` içindeki çift yolu Türkçe sayfada değiştirir. Kepler Drift
+ekranları oynanabilir prototipten alınmıştır ve sayfada öyle yazar. Durum satırı değişince (yayın, mağaza bağlantısı)
+`index.html` ile `_build.py` içindeki çift birlikte güncellenir.
