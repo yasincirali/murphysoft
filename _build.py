@@ -104,7 +104,9 @@ def main() -> None:
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <meta name="kaynak-sha256" content="{ozet}">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
+<link rel="manifest" href="/site.webmanifest">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="canonical" href="https://murphysoft.app/{uyg}/{sayfa}/">
 <title>{html.escape(baslik)} · Murphysoft</title>

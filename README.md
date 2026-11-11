@@ -36,3 +36,11 @@ ekranları oynanabilir prototipten alınmıştır ve sayfada öyle yazar. Durum 
   kaydırmayla hafifçe süzülür (`--q`). Hareketi azalt açıkken hiçbiri oynamaz.
 - **Sahne dekoru:** her sahnenin zemini uygulamanın dünyasından ton üstü ton çizilir (`svg.deco`): dalgalar, kort, bozuk
   paralar, raflar, yıldızlar. Katmanlar `--q` ile farklı hızda kayar. Sarı bölümlerde matbaa noktası, üstte ince kumlanma.
+
+## Site ikonu (2026-11-11)
+
+Kiremit zemin (`#b93a0a`) üstünde kemik rengi kayan y. Dosyalar: `favicon.ico` (16, 32, 48; kökte, çünkü tarayıcılar ve
+arama motorları orada arar), `assets/mark.svg` (keskin sekme ikonu), `assets/apple-touch-icon.png` (180, köşesiz ve
+saydamsız: iOS kendi yuvarlar), `assets/icon-192.png`, `icon-512.png`, `icon-maskable-512.png` ve `site.webmanifest`
+(Android ana ekranı). 16 ve 32 pikselde harf biraz daha büyük çizilir ki okunur kalsın. Bağlantılar her sayfanın
+başlığında; üretilen sayfalarda `_build.py` şablonundan gelir.
