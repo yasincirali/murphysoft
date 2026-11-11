@@ -284,6 +284,9 @@ TR = [
      "copy.textContent = 'Adresi kopyala';"),
     ("copy.textContent = 'Selected, now copy';",
      "copy.textContent = 'Seçildi, şimdi kopyala';"),
+    ('<nav class="spine" aria-label="Apps">', '<nav class="spine" aria-label="Uygulamalar">'),
+    ('<b>My Pocket Money</b>', '<b>Harçlıklarım</b>'),
+    ('<b>Coverline</b>', '<b>Rafım</b>'),
     # Uygulamanın içi (.look, 2026-11-11): ekranlar, ne yapar, durum. Görsel yolu da çift: TR ekranı olan uygulamada tr- dosyası.
     ('What Sandık does',
      'Sandık ne yapar'),

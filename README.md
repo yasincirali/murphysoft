@@ -28,8 +28,10 @@ ekranları oynanabilir prototipten alınmıştır ve sayfada öyle yazar. Durum 
 
 - **Logo (yasin: "Kayan y"):** ayrı simge yok; yazının içindeki y 13 derece kaymış durur. Sekme ikonu ve alt sayfalar
   için y harfi yola çevrildi (`assets/mark.svg`, `_build.py` `MARKA_SVG`). Açılışta harfler yükselir, y en son kayar.
-- **Zemin:** siyah yerine uyarı sarısı `#ffd231` ve mürekkep `#15140f`. Sarı bölümler (`.lite`) kendi zeminini taşır,
-  yuvarlak kenarlı bir sayfa gibi renkli sahnelerin üstünden kayar. Üst şerit altındaki zemine göre renk değiştirir.
+- **Zemin:** açık bölümler kemik rengi `--lg` (#f0eadc) ve mürekkep; doku harita kontur çizgileri (maske, rengi `--ldot`).
+  yasin sarıyı beğenmedi (2026-11-11). Açık bölümler (`.lite`) kendi zeminini taşır, yuvarlak kenarlı bir sayfa gibi renkli
+  sahnelerin üstünden kayar; üst şerit altındaki zemine göre renk değiştirir. Karşılamanın alt kenarı beş uygulamanın
+  rengidir (`.spine`) ve o sahneye götürür. Renk değişkenleri `:root` içinde; zemin değişirse yalnız oradan değişir.
 - **Geçişler:** sahne renkleri OKLab'da ve dar bir bantta karışır; başlık perdenin altından çıkar; ikon ve başlık
   kaydırmayla hafifçe süzülür (`--q`). Hareketi azalt açıkken hiçbiri oynamaz.
 - **Sahne dekoru:** her sahnenin zemini uygulamanın dünyasından ton üstü ton çizilir (`svg.deco`): dalgalar, kort, bozuk
